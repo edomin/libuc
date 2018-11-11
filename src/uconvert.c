@@ -23,7 +23,9 @@ uint8_t *UC_CreateUtf8() {
 
 uint8_t *UC_CreateUtf8FromChar(const char *symbol) {
     uint8_t *newSymbol = UC_CreateUtf8();
+
     UC_Utf8Copy(newSymbol, (const uint8_t *)symbol);
+
     return newSymbol;
 }
 
@@ -97,9 +99,9 @@ void UC_Ucs4ToUtf8(uint32_t ucs4, uint8_t **utf8, size_t *size) {
 uint32_t UC_Utf8ToUcs4(const uint8_t *utf8) {
     size_t size = UC_Utf8Size(utf8);
 
-    if (size == 1u) {
+    if (size == 1u)
         return ((uint32_t)utf8[0] & 0x7Fu);
-    } else if (size == 2u) {
+    else if (size == 2u) {
         return (((uint32_t)utf8[0] & 0x1Fu) << 6u) |
          ((uint32_t)utf8[1] & 0x3Fu);
     } else if (size == 3u) {
@@ -124,17 +126,15 @@ uint32_t UC_Utf8ToUcs4(const uint8_t *utf8) {
          (((uint32_t)utf8[3] & 0x3Fu) << 12u) |
          (((uint32_t)utf8[4] & 0x3Fu) << 6u) |
          ((uint32_t)utf8[5] & 0x3Fu);
-    } else {
+    } else
         return 0x00000020u;
-    }
 }
 
 void UC_Utf8Copy(uint8_t *toUtf8, const uint8_t *fromUtf8) {
     size_t i;
 
-    for (i = 0u; i < UC_Utf8Size(fromUtf8); i++) {
+    for (i = 0u; i <= UC_Utf8Size(fromUtf8); i++)
         toUtf8[i] = fromUtf8[i];
-    }
 }
 
 unsigned UC_Ucs4UpperBytes(uint32_t ucs4) {
@@ -151,9 +151,9 @@ uint8_t *UC_StringUtf8NextCodepoint(uint8_t *stringUtf8) {
     if (stringUtf8 == NULL)
         return NULL;
 
-    do {
+    do
         pos++;
-    } while ((pos[0] & 0xC0u) == 0x80u);
+    while ((pos[0] & 0xC0u) == 0x80u);
 
     return pos;
 }
@@ -164,9 +164,9 @@ size_t UC_StringUtf8NextCodepointOffset(uint8_t *stringUtf8, size_t beginPos) {
     if (stringUtf8 == NULL)
         return 0u;
 
-    do {
+    do
         pos++;
-    } while ((stringUtf8[pos] & 0xC0u) == 0x80u);
+    while ((stringUtf8[pos] & 0xC0u) == 0x80u);
 
     return pos;
 }
@@ -246,9 +246,8 @@ void UC_StringUcs4ToUtf8(uint32_t *stringUcs4, uint8_t **stringUtf8,
         size_t j;
 
         UC_Ucs4ToUtf8(stringUcs4[i], &utf8, &utf8Size);
-        for (j = 0; j < utf8Size; j++) {
+        for (j = 0; j < utf8Size; j++)
             (*stringUtf8)[utf8Pos + j] = utf8[j];
-        }
         utf8Pos += utf8Size;
     }
     (*stringUtf8)[utf8Pos] = 0x00u;
