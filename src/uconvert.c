@@ -1,4 +1,4 @@
-#include "uconvert_internal.h"
+#include "uconvert.h"
 
 size_t UC_Utf8Size(const uint8_t *utf8) {
     size_t i;
