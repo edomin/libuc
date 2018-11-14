@@ -11,7 +11,7 @@ build: refresh
 
 cmake_build/test_uconvert: build
 
-run: cmake_build/test_uconvert
+run_test: cmake_build/test_uconvert
 	cmake_build/test_uconvert
 
 clean:
