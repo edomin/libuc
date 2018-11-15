@@ -1,5 +1,15 @@
 #include "uconvert.h"
 
+void UC_GetLinkedVersion(int *verMajor, int *verMinor, int *verPatch) {
+    *verMajor = UC_VERSION_MAJOR;
+    *verMinor = UC_VERSION_MINOR;
+    *verPatch = UC_VERSION_PATCH;
+}
+
+const char *UC_GetLinkedVersionString(void) {
+    return UC_VERSION;
+}
+
 size_t UC_Utf8Size(const uint8_t *utf8) {
     size_t i;
 

@@ -4,6 +4,20 @@
 #include <stdlib.h>
 #include <stdint.h>
 
+#define UC_VERSION_MAJOR 1
+#define UC_VERSION_MINOR 0
+#define UC_VERSION_PATCH 0
+
+#define XSTR(A) STR(A)
+#define STR(A) #A
+
+#define UC_VERSION \
+ XSTR(UC_VERSION_MAJOR) "." XSTR(UC_VERSION_MINOR) "." XSTR(UC_VERSION_PATCH)
+
+void UC_GetLinkedVersion(int *verMajor, int *verMinor, int *verPatch);
+
+const char *UC_GetLinkedVersionString(void);
+
 /* count num bytes of UTF8 symbol except leading zero */
 size_t UC_Utf8Size(const uint8_t *utf8);
 

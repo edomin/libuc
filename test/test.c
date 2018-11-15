@@ -9,6 +9,31 @@ void CheckUtf8(uint8_t *utf8, const char *name) {
         printf("%s is not NULL \n", name);
 }
 
+void TestGetCompiledVersion(void) {
+    printf("Compiled version major: %i \n", UC_VERSION_MAJOR);
+    printf("Compiled version minor: %i \n", UC_VERSION_MINOR);
+    printf("Compiled version patch: %i \n", UC_VERSION_PATCH);
+}
+
+void TestGetCompiledVersionString(void) {
+    printf("Compiled version: %s \n", UC_VERSION);
+}
+
+void TestGetLinkedVersion(void) {
+    int verMajor;
+    int verMinor;
+    int verPatch;
+
+    UC_GetLinkedVersion(&verMajor, &verMinor, &verPatch);
+    printf("Linked version major: %i \n", verMajor);
+    printf("Linked version minor: %i \n", verMinor);
+    printf("Linked version patch: %i \n", verPatch);
+}
+
+void TestGetLinkedVersionString(void) {
+    printf("Linked version: %s \n", UC_GetLinkedVersionString());
+}
+
 void TestCreateUtf8FromChar(void) {
     printf("UC_CreateUtf8FromChar(\"z\") %s \n", UC_CreateUtf8FromChar("z"));
     printf("UC_CreateUtf8FromChar(\"ю\") %s \n", UC_CreateUtf8FromChar("ю"));
@@ -245,6 +270,10 @@ void TestUcs4LowerByte(void) {
 }
 
 int main(int argc, const char **argv) {
+    TestGetCompiledVersion();
+    TestGetCompiledVersionString();
+    TestGetLinkedVersion();
+    TestGetLinkedVersionString();
     TestCreateUtf8FromChar();
     TestCreateUtf8();
     TestDeleteUtf8();
