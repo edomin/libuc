@@ -22,7 +22,7 @@ const char *UC_GetLinkedVersionString(void);
 size_t UC_Utf8Size(const uint8_t *utf8);
 
 /* Create UTF8 symbol */
-uint8_t *UC_CreateUtf8();
+uint8_t *UC_CreateUtf8(void);
 
 /* Create UTF8 symbol */
 uint8_t *UC_CreateUtf8FromChar(const char *symbol);

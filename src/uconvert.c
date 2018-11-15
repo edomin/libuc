@@ -17,9 +17,8 @@ size_t UC_Utf8Size(const uint8_t *utf8) {
         return 0u;
 
     for (i = 0u; i < 7u; i++) {
-        if (utf8[i] == 0x00u) {
+        if (utf8[i] == 0x00u)
             return i;
-        }
         if (((utf8[i] & 0xC0u) != 0x80u) && (i != 0u))
             return i;
     }
@@ -27,7 +26,7 @@ size_t UC_Utf8Size(const uint8_t *utf8) {
     return 0u;
 }
 
-uint8_t *UC_CreateUtf8() {
+uint8_t *UC_CreateUtf8(void) {
     return malloc(sizeof(uint8_t) * 7);
 }
 
