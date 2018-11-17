@@ -52,6 +52,14 @@ uint8_t *UC_StringUtf8NextCodepoint(uint8_t *stringUtf8);
 /* return position of next UTF8 codepoint starting from begin pos */
 size_t UC_StringUtf8NextCodepointOffset(uint8_t *stringUtf8, size_t beginPos);
 
+/* return pointer to previous codepoint by given pointer of current UTF8
+ * codepoint */
+uint8_t *UC_StringUtf8PreviousCodepoint(uint8_t *stringUtf8);
+
+/* return position of previous UTF8 codepoint starting from begin pos */
+size_t UC_StringUtf8PreviousCodepointOffset(uint8_t *stringUtf8,
+ size_t beginPos);
+
 /* count codepoints of UTF8 string */
 size_t UC_StringUtf8Codepoints(uint8_t *stringUtf8);
 

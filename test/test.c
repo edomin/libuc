@@ -190,6 +190,40 @@ void TestStringUtf8NextCodepoint(void) {
     }
 }
 
+void TestStringUtf8PreviousCodepointOffset(void) {
+    uint8_t *utf8String = (uint8_t *)"Привет";
+    size_t   i;
+    size_t   len = UC_StringUtf8Codepoints(utf8String);
+    size_t   pos;
+
+    pos = 0u;
+    for (i = 0u; i < len; i++) {
+        pos = UC_StringUtf8NextCodepointOffset(utf8String, pos);
+    }
+
+    for (i = 0u; i < len; i++) {
+        pos = UC_StringUtf8PreviousCodepointOffset(utf8String, pos);
+        printf(
+         "UC_StringUtf8PreviousCodepointOffset(tempUtf8, pos) pos - %lu, "
+         "tempUtf8 - %s \n", pos, (uint8_t *)&utf8String[pos]);
+    }
+}
+
+void TestStringUtf8PreviousCodepoint(void) {
+    uint8_t *utf8String = (uint8_t *)"Привет";
+    uint8_t *tempUtf8;
+    size_t   len = UC_StringUtf8Codepoints(utf8String);
+
+    tempUtf8 = utf8String;
+    while (UC_StringUtf8Codepoints(tempUtf8) != 0u) {
+        tempUtf8 = UC_StringUtf8NextCodepoint(tempUtf8);
+    }
+    do {
+        tempUtf8 = UC_StringUtf8PreviousCodepoint(tempUtf8);
+        printf("UC_StringUtf8PreviousCodepoint(tempUtf8) %s \n", tempUtf8);
+    } while (UC_StringUtf8Codepoints(tempUtf8) != len);
+}
+
 void TestUC_StringUtf8ToUcs4(void) {
     uint8_t  *utf8String = (uint8_t *)"Привет";
     size_t    i;
@@ -285,6 +319,8 @@ int main(int argc, const char **argv) {
     TestStringUtf8Size();
     TestStringUtf8NextCodepointOffset();
     TestStringUtf8NextCodepoint();
+    TestStringUtf8PreviousCodepointOffset();
+    TestStringUtf8PreviousCodepoint();
     TestUC_StringUtf8ToUcs4();
     TestStringUcs4Len();
     TestStringUcs4Size();

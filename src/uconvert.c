@@ -183,6 +183,33 @@ size_t UC_StringUtf8NextCodepointOffset(uint8_t *stringUtf8, size_t beginPos) {
     return pos;
 }
 
+uint8_t *UC_StringUtf8PreviousCodepoint(uint8_t *stringUtf8) {
+    uint8_t *pos = stringUtf8;
+
+    if (stringUtf8 == NULL)
+        return NULL;
+
+    do
+        pos--;
+    while ((pos[0] & 0xC0u) == 0x80u);
+
+    return pos;
+}
+
+size_t UC_StringUtf8PreviousCodepointOffset(uint8_t *stringUtf8,
+ size_t beginPos) {
+    size_t pos = beginPos;
+
+    if (stringUtf8 == NULL)
+        return 0u;
+
+    do
+        pos--;
+    while ((stringUtf8[pos] & 0xC0u) == 0x80u);
+
+    return pos;
+}
+
 size_t UC_StringUtf8Codepoints(uint8_t *stringUtf8) {
     size_t codepoints = 0u;
     size_t currentPos = 0u;
