@@ -53,4 +53,4 @@ dkms.conf
 
 cmake_build/
 
-libuconvert\.geany
+libuc.geany

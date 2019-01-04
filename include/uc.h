@@ -1,5 +1,5 @@
-#ifndef UCONVERT_H
-#define UCONVERT_H
+#ifndef UC_H
+#define UC_H
 
 #include <stdlib.h>
 #include <stdint.h>

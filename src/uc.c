@@ -1,4 +1,4 @@
-#include "uconvert.h"
+#include "uc.h"
 
 void UC_GetLinkedVersion(int *verMajor, int *verMinor, int *verPatch) {
     *verMajor = UC_VERSION_MAJOR;

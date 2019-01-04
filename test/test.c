@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#include "uconvert.h"
+#include "uc.h"
 
 void CheckUtf8(uint8_t *utf8, const char *name) {
     if (utf8 == NULL)

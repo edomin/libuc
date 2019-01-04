@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.1.3)
-project(uconvert)
+project(uc)
 
 set(CMAKE_C_STANDARD 90)
 set(DEBUG_FLAGS "-O0 -g -ggdb")
@@ -14,13 +14,13 @@ set(PROJECT_HEADERS_DIR "include")
 include_directories("." "${PROJECT_SOURCES_DIR}" "${PROJECT_HEADERS_DIR}")
 
 list(APPEND SOURCE_FILES
-  "${PROJECT_SOURCES_DIR}/uconvert.c"
+  "${PROJECT_SOURCES_DIR}/uc.c"
 )
 
-add_library(uconvert ${SOURCE_FILES})
+add_library(uc ${SOURCE_FILES})
 
-project(test_uconvert)
+project(test_libuc)
 list(APPEND SOURCE_FILES
-  "${PROJECT_SOURCES_DIR}/uconvert.c" "test/test.c"
+  "${PROJECT_SOURCES_DIR}/uc.c" "test/test.c"
 )
-add_executable(test_uconvert ${SOURCE_FILES})
+add_executable(test_libuc ${SOURCE_FILES})
