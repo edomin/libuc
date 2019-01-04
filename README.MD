@@ -1,24 +1,29 @@
-Library for converting text between various encodings. Currently supported
-conversions:
+Library for working with text in various encodings. Currently supported
+encodings:
 
-* UTF-8 -> UCS-4
-* UCS-4 -> UTF-8
+* UTF-8
+* UCS-4
 
 #### Building
 CMake required
 ```
-$ make
-```
-or
-```
 $ mkdir build
 $ cd build
 $ cmake ..
+$ make
 ```
 
-#### Build and run test
+#### Installing
+CMake required
 ```
-$ make run_test
+$ cd build
+$ make install
+```
+
+#### Running test
+```
+$ cd build
+$ ./test_libuc
 ```
 
 #### Usage
