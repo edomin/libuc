@@ -18,6 +18,14 @@ list(APPEND SOURCE_FILES
 )
 
 add_library(uc ${SOURCE_FILES})
+set_target_properties(uc PROPERTIES PUBLIC_HEADER "include/uc.h")
+
+install(TARGETS uc
+  RUNTIME       DESTINATION bin
+  LIBRARY       DESTINATION lib
+  ARCHIVE       DESTINATION lib
+  PUBLIC_HEADER DESTINATION include
+)
 
 project(test_libuc)
 list(APPEND SOURCE_FILES
