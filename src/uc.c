@@ -255,7 +255,8 @@ size_t UC_StringUcs4Size(uint32_t *stringUcs4) {
 
 void UC_StringUcs4ToUtf8(uint32_t *stringUcs4, uint8_t **stringUtf8,
  size_t *codepoints, size_t *size) {
-    uint8_t *utf8 = malloc(sizeof(uint8_t) * 7);
+    uint8_t  utf8Buf[7];
+    uint8_t *utf8 = utf8Buf;
     size_t   ucs4Len = UC_StringUcs4Len(stringUcs4);
     size_t   utf8Pos = 0u;
     size_t   utf8Size;
@@ -266,7 +267,6 @@ void UC_StringUcs4ToUtf8(uint32_t *stringUcs4, uint8_t **stringUtf8,
             *codepoints = 0;
         if (size != NULL)
             *size = 0;
-        free(utf8);
         return;
     }
 
@@ -277,7 +277,6 @@ void UC_StringUcs4ToUtf8(uint32_t *stringUcs4, uint8_t **stringUtf8,
             *codepoints = 0;
         if (size != NULL)
             *size = 0;
-        free(utf8);
         return;
     }
 
@@ -296,8 +295,6 @@ void UC_StringUcs4ToUtf8(uint32_t *stringUcs4, uint8_t **stringUtf8,
 
     if (size != NULL)
         *size = utf8Pos;
-
-    free(utf8);
 }
 
 void UC_StringUtf8ToUcs4(uint8_t *stringUtf8, uint32_t **stringUcs4,
