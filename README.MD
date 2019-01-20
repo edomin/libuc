@@ -14,7 +14,6 @@ $ make
 ```
 
 #### Installing
-CMake required
 ```
 $ cd build
 $ make install
@@ -27,7 +26,7 @@ $ ./test_libuc
 ```
 
 #### Usage
-Look include/libucinvert.h
+Look [uc.h](https://github.com/edomin/libuconvert/tree/master/include/uc.h)
 
 #### Copying
 License - CC0. Read [LICENSE](https://github.com/edomin/libuconvert/tree/master/LICENSE) file
