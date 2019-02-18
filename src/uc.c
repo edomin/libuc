@@ -1,9 +1,12 @@
 #include "uc.h"
 
 void UC_GetLinkedVersion(int *verMajor, int *verMinor, int *verPatch) {
-    *verMajor = UC_VERSION_MAJOR;
-    *verMinor = UC_VERSION_MINOR;
-    *verPatch = UC_VERSION_PATCH;
+    if (verMajor != NULL)
+        *verMajor = UC_VERSION_MAJOR;
+    if (verMinor != NULL)
+        *verMinor = UC_VERSION_MINOR;
+    if (verPatch != NULL)
+        *verPatch = UC_VERSION_PATCH;
 }
 
 const char *UC_GetLinkedVersionString(void) {
