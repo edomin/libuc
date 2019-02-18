@@ -37,8 +37,8 @@ void UC_Ucs4ToUtf8(uint32_t ucs4, uint8_t **utf8, size_t *size);
 /* convert UTF8 symbol to UCS4 symbol */
 uint32_t UC_Utf8ToUcs4(const uint8_t *utf8);
 
-/* Copy first symbol from fromUtf8 to toUtf8 */
-void UC_Utf8Copy(uint8_t *toUtf8, const uint8_t *fromUtf8);
+/* Copy first symbol from fromUtf8 to toUtf8. Returns num bytes copied */
+size_t UC_Utf8Copy(uint8_t *toUtf8, const uint8_t *fromUtf8);
 
 /* Returns upper bytes of UCS4 code. Example: 0x2522 -> 0x25 */
 unsigned UC_Ucs4UpperBytes(uint32_t ucs4);

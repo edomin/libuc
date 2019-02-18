@@ -110,14 +110,19 @@ uint32_t UC_Utf8ToUcs4(const uint8_t *utf8) {
         return 0x00000020u;
 }
 
-void UC_Utf8Copy(uint8_t *toUtf8, const uint8_t *fromUtf8) {
+size_t UC_Utf8Copy(uint8_t *toUtf8, const uint8_t *fromUtf8) {
     size_t i;
     size_t size = UC_Utf8Size(fromUtf8);
+
+    if (toUtf8 == NULL)
+        return 0u;
 
     for (i = 0u; i < size; i++)
         toUtf8[i] = fromUtf8[i];
 
     toUtf8[size] = 0u;
+
+    return size;
 }
 
 unsigned UC_Ucs4UpperBytes(uint32_t ucs4) {
