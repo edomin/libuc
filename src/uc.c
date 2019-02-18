@@ -19,7 +19,7 @@ size_t UC_Utf8Size(const uint8_t *utf8) {
     if (utf8 == NULL)
         return 0u;
 
-    for (i = 0u; i < 7u; i++) {
+    for (i = 0u; i < 5u; i++) {
         if (utf8[i] == 0x00u)
             return i;
         if (((utf8[i] & 0xC0u) != 0x80u) && (i != 0u))
@@ -30,7 +30,7 @@ size_t UC_Utf8Size(const uint8_t *utf8) {
 }
 
 uint8_t *UC_CreateUtf8(void) {
-    return malloc(sizeof(uint8_t) * 7);
+    return malloc(sizeof(uint8_t) * 5u);
 }
 
 uint8_t *UC_CreateUtf8FromChar(const char *symbol) {
@@ -81,25 +81,6 @@ void UC_Ucs4ToUtf8(uint32_t ucs4, uint8_t **utf8, size_t *size) {
         (*utf8)[4] = 0x00u;
         if (size != NULL)
             *size = 4u;
-    } else if (ucs4 <= 0x03FFFFFFu) {
-        (*utf8)[0] = ((ucs4 & 0x3000000u) >> 24u) | 0xF8u;
-        (*utf8)[1] = ((ucs4 & 0xFC0000u) >> 18u) | 0x80u;
-        (*utf8)[2] = ((ucs4 & 0x3F000u) >> 12u) | 0x80u;
-        (*utf8)[3] = ((ucs4 & 0xFC0u) >> 6u) | 0x80u;
-        (*utf8)[4] = (ucs4 & 0x3Fu) | 0x80u;
-        (*utf8)[5] = 0x00u;
-        if (size != NULL)
-            *size = 5u;
-    } else if (ucs4 <= 0x7FFFFFFFu) {
-        (*utf8)[0] = ((ucs4 & 0x40000000u) >> 30u) | 0xFCu;
-        (*utf8)[1] = ((ucs4 & 0x3F000000u) >> 24u) | 0x80u;
-        (*utf8)[2] = ((ucs4 & 0xFC0000u) >> 18u) | 0x80u;
-        (*utf8)[3] = ((ucs4 & 0x3F000u) >> 12u) | 0x80u;
-        (*utf8)[4] = ((ucs4 & 0xFC0u) >> 6u) | 0x80u;
-        (*utf8)[5] = (ucs4 & 0x3Fu) | 0x80u;
-        (*utf8)[6] = 0x00u;
-        if (size != NULL)
-            *size = 6u;
     } else {
         (*utf8)[0] = 0x20u;
         (*utf8)[1] = 0x00u;
@@ -121,23 +102,10 @@ uint32_t UC_Utf8ToUcs4(const uint8_t *utf8) {
          (((uint32_t)utf8[1] & 0x3Fu) << 6u) |
          ((uint32_t)utf8[2] & 0x3Fu);
     } else if (size == 4u) {
-        return (((uint32_t)utf8[0] & 0x7u) << 18u) |
-         (((uint32_t)utf8[1] & 0x3Fu) << 12u) |
-         (((uint32_t)utf8[2] & 0x3Fu) << 6u) |
-         ((uint32_t)utf8[3] & 0x3Fu);
-    } else if (size == 5u) {
-        return (((uint32_t)utf8[0] & 0x3u) << 24u) |
-         (((uint32_t)utf8[1] & 0x3Fu) << 18u) |
-         (((uint32_t)utf8[2] & 0x3Fu) << 12u) |
-         (((uint32_t)utf8[3] & 0x3Fu) << 6u) |
-         ((uint32_t)utf8[4] & 0x3Fu);
-    } else if (size == 6u) {
-        return (((uint32_t)utf8[0] & 0x1u) << 30u) |
-         (((uint32_t)utf8[1] & 0x3Fu) << 24u) |
-         (((uint32_t)utf8[2] & 0x3Fu) << 18u) |
-         (((uint32_t)utf8[3] & 0x3Fu) << 12u) |
-         (((uint32_t)utf8[4] & 0x3Fu) << 6u) |
-         ((uint32_t)utf8[5] & 0x3Fu);
+        return (((uint32_t)utf8[0u] & 0x7u) << 18u) |
+         (((uint32_t)utf8[1u] & 0x3Fu) << 12u) |
+         (((uint32_t)utf8[2u] & 0x3Fu) << 6u) |
+         ((uint32_t)utf8[3u] & 0x3Fu);
     } else
         return 0x00000020u;
 }
@@ -258,7 +226,7 @@ size_t UC_StringUcs4Size(uint32_t *stringUcs4) {
 
 void UC_StringUcs4ToUtf8(uint32_t *stringUcs4, uint8_t **stringUtf8,
  size_t *codepoints, size_t *size) {
-    uint8_t  utf8Buf[7];
+    uint8_t  utf8Buf[5u];
     uint8_t *utf8 = utf8Buf;
     size_t   ucs4Len = UC_StringUcs4Len(stringUcs4);
     size_t   utf8Pos = 0u;
