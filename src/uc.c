@@ -56,34 +56,34 @@ void UC_Ucs4ToUtf8(uint32_t ucs4, uint8_t **utf8, size_t *size) {
     }
 
     if (ucs4 <= 0x0000007Fu) {
-        (*utf8)[0] = (ucs4 & 0x7Fu);
-        (*utf8)[1] = 0x00u;
+        (*utf8)[0u] = (ucs4 & 0x7Fu);
+        (*utf8)[1u] = 0x00u;
         if (size != NULL)
             *size = 1u;
     } else if (ucs4 <= 0x000007FFu) {
-        (*utf8)[0] = ((ucs4 & 0x7C0u) >> 6u) | 0xC0u;
-        (*utf8)[1] = (ucs4 & 0x3Fu) | 0x80u;
-        (*utf8)[2] = 0x00u;
+        (*utf8)[0u] = ((ucs4 & 0x7C0u) >> 6u) | 0xC0u;
+        (*utf8)[1u] = (ucs4 & 0x3Fu) | 0x80u;
+        (*utf8)[2u] = 0x00u;
         if (size != NULL)
             *size = 2u;
     } else if (ucs4 <= 0x0000FFFFu) {
-        (*utf8)[0] = ((ucs4 & 0xF000u) >> 12u) | 0xE0u;
-        (*utf8)[1] = ((ucs4 & 0xFC0u) >> 6u) | 0x80u;
-        (*utf8)[2] = (ucs4 & 0x3Fu) | 0x80u;
-        (*utf8)[3] = 0x00u;
+        (*utf8)[0u] = ((ucs4 & 0xF000u) >> 12u) | 0xE0u;
+        (*utf8)[1u] = ((ucs4 & 0xFC0u) >> 6u) | 0x80u;
+        (*utf8)[2u] = (ucs4 & 0x3Fu) | 0x80u;
+        (*utf8)[3u] = 0x00u;
         if (size != NULL)
             *size = 3u;
     } else if (ucs4 <= 0x001FFFFFu) {
-        (*utf8)[0] = ((ucs4 & 0x1C0000u) >> 18u) | 0xF0u;
-        (*utf8)[1] = ((ucs4 & 0x3F000u) >> 12u) | 0x80u;
-        (*utf8)[2] = ((ucs4 & 0xFC0u) >> 6u) | 0x80u;
-        (*utf8)[3] = (ucs4 & 0x3Fu) | 0x80u;
-        (*utf8)[4] = 0x00u;
+        (*utf8)[0u] = ((ucs4 & 0x1C0000u) >> 18u) | 0xF0u;
+        (*utf8)[1u] = ((ucs4 & 0x3F000u) >> 12u) | 0x80u;
+        (*utf8)[2u] = ((ucs4 & 0xFC0u) >> 6u) | 0x80u;
+        (*utf8)[3u] = (ucs4 & 0x3Fu) | 0x80u;
+        (*utf8)[4u] = 0x00u;
         if (size != NULL)
             *size = 4u;
     } else {
-        (*utf8)[0] = 0x20u;
-        (*utf8)[1] = 0x00u;
+        (*utf8)[0u] = 0x20u;
+        (*utf8)[1u] = 0x00u;
         if (size != NULL)
             *size = 1u;
     }
@@ -93,14 +93,14 @@ uint32_t UC_Utf8ToUcs4(const uint8_t *utf8) {
     size_t size = UC_Utf8Size(utf8);
 
     if (size == 1u)
-        return ((uint32_t)utf8[0] & 0x7Fu);
+        return ((uint32_t)utf8[0u] & 0x7Fu);
     else if (size == 2u) {
-        return (((uint32_t)utf8[0] & 0x1Fu) << 6u) |
-         ((uint32_t)utf8[1] & 0x3Fu);
+        return (((uint32_t)utf8[0u] & 0x1Fu) << 6u) |
+         ((uint32_t)utf8[1u] & 0x3Fu);
     } else if (size == 3u) {
-        return (((uint32_t)utf8[0] & 0xFu) << 12u) |
-         (((uint32_t)utf8[1] & 0x3Fu) << 6u) |
-         ((uint32_t)utf8[2] & 0x3Fu);
+        return (((uint32_t)utf8[0u] & 0xFu) << 12u) |
+         (((uint32_t)utf8[1u] & 0x3Fu) << 6u) |
+         ((uint32_t)utf8[2u] & 0x3Fu);
     } else if (size == 4u) {
         return (((uint32_t)utf8[0u] & 0x7u) << 18u) |
          (((uint32_t)utf8[1u] & 0x3Fu) << 12u) |
@@ -121,7 +121,7 @@ void UC_Utf8Copy(uint8_t *toUtf8, const uint8_t *fromUtf8) {
 }
 
 unsigned UC_Ucs4UpperBytes(uint32_t ucs4) {
-    return ucs4 >> 8;
+    return ucs4 >> 8u;
 }
 
 unsigned UC_Ucs4LowerByte(uint32_t ucs4) {
@@ -136,7 +136,7 @@ uint8_t *UC_StringUtf8NextCodepoint(uint8_t *stringUtf8) {
 
     do
         pos++;
-    while ((pos[0] & 0xC0u) == 0x80u);
+    while ((pos[0u] & 0xC0u) == 0x80u);
 
     return pos;
 }
@@ -162,7 +162,7 @@ uint8_t *UC_StringUtf8PreviousCodepoint(uint8_t *stringUtf8) {
 
     do
         pos--;
-    while ((pos[0] & 0xC0u) == 0x80u);
+    while ((pos[0u] & 0xC0u) == 0x80u);
 
     return pos;
 }
@@ -235,19 +235,19 @@ void UC_StringUcs4ToUtf8(uint32_t *stringUcs4, uint8_t **stringUtf8,
 
     if (stringUtf8 == NULL) {
         if (codepoints != NULL)
-            *codepoints = 0;
+            *codepoints = 0u;
         if (size != NULL)
-            *size = 0;
+            *size = 0u;
         return;
     }
 
     if (stringUcs4 == NULL) {
-        (*stringUtf8)[0] = 0x00u;
+        (*stringUtf8)[0u] = 0x00u;
 
         if (codepoints != NULL)
-            *codepoints = 0;
+            *codepoints = 0u;
         if (size != NULL)
-            *size = 0;
+            *size = 0u;
         return;
     }
 
@@ -255,7 +255,7 @@ void UC_StringUcs4ToUtf8(uint32_t *stringUcs4, uint8_t **stringUtf8,
         size_t j;
 
         UC_Ucs4ToUtf8(stringUcs4[i], &utf8, &utf8Size);
-        for (j = 0; j < utf8Size; j++)
+        for (j = 0u; j < utf8Size; j++)
             (*stringUtf8)[utf8Pos + j] = utf8[j];
         utf8Pos += utf8Size;
     }
@@ -281,7 +281,7 @@ void UC_StringUtf8ToUcs4(uint8_t *stringUtf8, uint32_t **stringUcs4,
     }
 
     if (stringUtf8 == NULL) {
-        (*stringUcs4)[0] = 0x00000000u;
+        (*stringUcs4)[0u] = 0x00000000u;
         if (len != NULL)
             *len = 0u;
         return;
