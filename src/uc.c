@@ -54,6 +54,11 @@ void UC_Ucs4ToUtf8(uint32_t ucs4, uint8_t **utf8, size_t *size) {
             *size = 0u;
         return;
     }
+    if (*utf8 == NULL) {
+        if (size != NULL)
+            *size = 0u;
+        return;
+    }
 
     if (ucs4 <= 0x0000007Fu) {
         (*utf8)[0u] = (ucs4 & 0x7Fu);
