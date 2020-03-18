@@ -37,4 +37,4 @@ Look in [uc.h](https://github.com/edomin/libuconvert/tree/master/include/uc.h)
 #### Copying
 
 * Source code of library is under CC0. Read [LICENSE](https://github.com/edomin/libuconvert/tree/master/LICENSE) file
-* File cmake/CodeCoverage.cmake is under BSL 1.0 Read [third_party_licenses/LICENSE_1_0.txt](https://github.com/edomin/libuconvert/tree/master/third_party_licenses/LICENSE_1_0.txt) file
+* File cmake/CodeCoverage.cmake is under BSL 1.0. Read [third_party_licenses/LICENSE_1_0.txt](https://github.com/edomin/libuconvert/tree/master/third_party_licenses/LICENSE_1_0.txt) file
