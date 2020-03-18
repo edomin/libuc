@@ -28,7 +28,7 @@ set(CMAKE_C_STANDARD 90)
 set(DEBUG_FLAGS "-O0 -g -ggdb")
 set(WARNING_FLAGS "-Wall -Wextra -Werror -Wno-unused-parameter \
  -Wno-unused-but-set-parameter -Winit-self -Wswitch-default \
- -Wduplicated-branches -Wduplicated-cond -Wfloat-equal -Wdangling-else \
+ -Wduplicated-cond -Wfloat-equal \
  -Wlogical-op")
 
 set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} ${DEBUG_FLAGS} ${WARNING_FLAGS}")
@@ -80,15 +80,23 @@ if(BUILD_TESTS)
 
     UC_ADD_TEST(UC_GetLinkedVersion)
     UC_ADD_TEST(UC_GetLinkedVersionString)
-    UC_ADD_TEST(UC_CreateUtf8)
     UC_ADD_TEST(UC_Utf8Size)
     UC_ADD_TEST(UC_Utf8Copy)
-    UC_ADD_TEST(UC_CreateUtf8FromChar)
-    UC_ADD_TEST(UC_DeleteUtf8)
     UC_ADD_TEST(UC_Ucs4ToUtf8)
     UC_ADD_TEST(UC_Utf8ToUcs4)
     UC_ADD_TEST(UC_Ucs4UpperBytes)
     UC_ADD_TEST(UC_Ucs4LowerByte)
+    UC_ADD_TEST(UC_StringUtf8NextCodepoint)
+    UC_ADD_TEST(UC_StringUtf8NextCodepointOffset)
+    UC_ADD_TEST(UC_StringUtf8PreviousCodepoint)
+    UC_ADD_TEST(UC_StringUtf8PreviousCodepointOffset)
+    UC_ADD_TEST(UC_StringUtf8Codepoints)
+    UC_ADD_TEST(UC_StringUtf8Size)
+    UC_ADD_TEST(UC_StringUcs4Len)
+    UC_ADD_TEST(UC_StringUcs4Size)
+    UC_ADD_TEST(UC_StringUcs4PredictUtf8Size)
+    UC_ADD_TEST(UC_StringUcs4ToUtf8)
+    UC_ADD_TEST(UC_StringUtf8ToUcs4)
 endif(BUILD_TESTS)
 
 if(TEST_CODE_COVERAGE)

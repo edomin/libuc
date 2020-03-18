@@ -30,6 +30,15 @@ void UC_Utf8ToUcs4_ChinesseTiger_0x0000864E(void **state) {
     assert_true(ucs4 == 0x0000864Eu);
 }
 
+void UC_Utf8ToUcs4_Smile_0x0001F603(void **state) {
+    const uint8_t utf8[] = {'\xF0', '\x9F', '\x98', '\x83', '\0'}; /* 😃 */
+    uint32_t      ucs4 = 0xDEADBEEFu;
+
+    ucs4 = UC_Utf8ToUcs4(utf8);
+
+    assert_true(ucs4 == 0x0001F603u);
+}
+
 void UC_Utf8ToUcs4_TwoCyrillicYu_0x0000044E(void **state) {
     const uint8_t utf8[] = {'\xD1', '\x8E', '\xD1', '\x8E', '\0'}; /* юю */
     uint32_t      ucs4 = 0xDEADBEEFu;
@@ -70,6 +79,7 @@ const struct CMUnitTest testsGroup[] = {
     cmocka_unit_test(UC_Utf8ToUcs4_Z_0x0000007A),
     cmocka_unit_test(UC_Utf8ToUcs4_CyrillicYu_0x0000044E),
     cmocka_unit_test(UC_Utf8ToUcs4_ChinesseTiger_0x0000864E),
+    cmocka_unit_test(UC_Utf8ToUcs4_Smile_0x0001F603),
     cmocka_unit_test(UC_Utf8ToUcs4_TwoCyrillicYu_0x0000044E),
     cmocka_unit_test(UC_Utf8ToUcs4_TooLongSequence_0x00000020),
     cmocka_unit_test(UC_Utf8ToUcs4_Empty_0x00000020),
