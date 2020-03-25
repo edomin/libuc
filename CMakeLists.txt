@@ -1,75 +1,111 @@
-cmake_minimum_required(VERSION 3.1.3)
-project(uc)
+cmake_minimum_required(VERSION 3.7.2)
 
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
+include(options)
 
-option(BUILD_TESTS "Build test programs" OFF)
-option(TEST_CODE_COVERAGE "Test coverage" OFF)
+if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
+    message(STATUS "Setting build type to 'Debug' as none was specified.")
+    set(CMAKE_BUILD_TYPE "Debug" CACHE
+        STRING "Choose the type of build." FORCE)
+    set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release")
+endif()
 
-if(NOT CMAKE_BUILD_TYPE STREQUAL "Debug")
-    if(BUILD_TESTS)
-        message(WARNING "Debug build required for building tests. BUILD_TESTS changed to OFF")
-        set(BUILD_TESTS OFF)
-    endif(BUILD_TESTS)
-    if(TEST_CODE_COVERAGE)
-        message(WARNING "Debug build required for testing coverage. TEST_CODE_COVERAGE changed to OFF")
-        set(TEST_CODE_COVERAGE OFF)
-    endif(TEST_CODE_COVERAGE)
-endif(NOT CMAKE_BUILD_TYPE STREQUAL "Debug")
+if(UC_CODE_COVERAGE)
+    if(NOT CMAKE_BUILD_TYPE STREQUAL "Debug")
+        message(STATUS "Setting build type to 'Debug' because Code Coverage needs Debug build.")
+        set(CMAKE_BUILD_TYPE "Debug")
+    endif()
+    set(UC_LANGUAGES C CXX)
+else()
+    set(UC_LANGUAGES C)
+endif()
 
-if(TEST_CODE_COVERAGE)
-    if(NOT BUILD_TESTS)
-        message(STATUS "Testing coverage required building tests. BUILD_TESTS changed to ON")
-        set(BUILD_TESTS ON)
-    endif(NOT BUILD_TESTS)
-endif(TEST_CODE_COVERAGE)
+project(uc LANGUAGES ${UC_LANGUAGES})
 
-set(CMAKE_C_STANDARD 90)
-set(DEBUG_FLAGS "-O0 -g -ggdb")
-set(WARNING_FLAGS "-Wall -Wextra -Werror -Wno-unused-parameter \
- -Wno-unused-but-set-parameter -Winit-self -Wswitch-default \
- -Wduplicated-cond -Wfloat-equal \
- -Wlogical-op")
+include(CheckCCompilerFlag)
+check_c_compiler_flag("-Walloca" UC_HAVE_WALLOCA)
+check_c_compiler_flag("-Wdangling-else" UC_HAVE_WDANGLING_ELSE)
+check_c_compiler_flag("-Wduplicated-branches" UC_HAVE_WDUPLICATED_BRANCHES)
+check_c_compiler_flag("-Wif-not-aligned" UC_HAVE_WIF_NOT_ALIGNED)
+check_c_compiler_flag("-Wstringop-truncation" UC_HAVE_WSTRINGOP_TRUNCATION)
+if (UC_HAVE_WALLOCA)
+    set(UC_WALLOCA "-Walloca")
+else()
+    set(UC_WALLOCA "")
+endif()
+if (UC_HAVE_WDANGLING_ELSE)
+    set(UC_WDANGLING_ELSE "-Wdangling-else")
+else()
+    set(UC_WDANGLING_ELSE "")
+endif()
+if (UC_HAVE_WDUPLICATED_BRANCHES)
+    set(UC_WDUPLICATED_BRANCHES "-Wduplicated-branches")
+else()
+    set(UC_WDUPLICATED_BRANCHES "")
+endif()
+if (UC_HAVE_WIF_NOT_ALIGNED)
+    set(UC_WIF_NOT_ALIGNED "-Wif-not-aligned")
+else()
+    set(UC_WIF_NOT_ALIGNED "")
+endif()
+if (UC_HAVE_WSTRINGOP_TRUNCATION)
+    set(UC_WSTRINGOP_TRUNCATION "-Wstringop-truncation")
+else()
+    set(UC_WSTRINGOP_TRUNCATION "")
+endif()
 
-set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} ${DEBUG_FLAGS} ${WARNING_FLAGS}")
-set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} ${WARNING_FLAGS}")
-set(PROJECT_SOURCES_DIR "src")
-set(PROJECT_HEADERS_DIR "include")
-include_directories("." "${PROJECT_SOURCES_DIR}" "${PROJECT_HEADERS_DIR}")
-
-list(APPEND SOURCE_FILES
-  "${PROJECT_SOURCES_DIR}/uc.c"
+add_library(uc)
+set_target_properties(uc PROPERTIES
+    C_STANDARD 90
+    C_EXTENSIONS OFF
 )
-
-add_library(uc ${SOURCE_FILES})
-set_target_properties(uc PROPERTIES PUBLIC_HEADER "${PROJECT_HEADERS_DIR}/uc.h")
-
-install(
-    TARGETS       uc
-    RUNTIME       DESTINATION bin
-    LIBRARY       DESTINATION lib
-    ARCHIVE       DESTINATION lib
-    PUBLIC_HEADER DESTINATION include
+target_compile_options(uc PRIVATE
+    -Wall -Wextra -Wno-unused-parameter -Wshadow -Werror
 )
+if (UC_MORE_WARNINGS)
+    target_compile_options(uc PRIVATE
+        -Waggregate-return ${UC_WALLOCA} -Wbad-function-cast -Wcast-align
+        -Wcast-qual ${UC_WDANGLING_ELSE} -Wdeclaration-after-statement
+        ${UC_WDUPLICATED_BRANCHES} -Wduplicated-cond ${UC_WIF_NOT_ALIGNED}
+        -Winit-self -Winline -Wjump-misses-init -Wlogical-op -Wnested-externs
+        -Wnonnull -Wnonnull-compare -Wnull-dereference -Wold-style-definition
+        -Wpointer-arith -Wredundant-decls -Wshift-overflow=2
+        -Wstrict-prototypes ${UC_WSTRINGOP_TRUNCATION} -Wswitch-default
+        -Wswitch-enum -Wundef -Wuninitialized -Wunsafe-loop-optimizations
+        -Wvector-operation-performance -Wvla -Wwrite-strings
+    )
+endif()
+target_sources(uc PRIVATE
+    "src/uc.c"
+)
+if (CMAKE_SYSTEM_NAME STREQUAL Windows)
+    target_sources(uc PRIVATE "src/uc.rc")
+    set(UC_SO_DEST "bin")
+else()
+    set(UC_SO_DEST "lib")
+endif()
+target_include_directories(uc PRIVATE include)
 
-if(TEST_CODE_COVERAGE)
-    INCLUDE(CodeCoverage)
+set_target_properties(uc PROPERTIES PUBLIC_HEADER "include/uc.h")
+
+if(UC_CODE_COVERAGE)
+    include(CodeCoverage)
     APPEND_COVERAGE_COMPILER_FLAGS()
-    set(COVERAGE_FLAGS "-fprofile-arcs -ftest-coverage")
-endif(TEST_CODE_COVERAGE)
+    set(UC_COVERAGE_FLAGS "-fprofile-arcs -ftest-coverage")
+    set(COVERAGE_LCOV_EXCLUDES "${CMAKE_SOURCE_DIR}/test/*")
 
-if(BUILD_TESTS)
     enable_testing()
-    set(TESTS_SOURCES_DIR "test")
+    set(UC_TESTS_SOURCES_DIR "test")
     find_package(CMOCKA REQUIRED)
 
     function(UC_ADD_TEST func)
         set(TEST_NAME "test_${func}")
-        add_executable(${TEST_NAME} "${TESTS_SOURCES_DIR}/${func}.c")
+        add_executable(${TEST_NAME} "${UC_TESTS_SOURCES_DIR}/${func}.c")
+        target_include_directories(${TEST_NAME} PRIVATE include)
         target_link_libraries(
             ${TEST_NAME}
             ${CMOCKA_LIBRARY}
-            ${COVERAGE_FLAGS}
+            ${UC_COVERAGE_FLAGS}
             uc
         )
         add_test(
@@ -97,12 +133,18 @@ if(BUILD_TESTS)
     UC_ADD_TEST(UC_StringUcs4PredictUtf8Size)
     UC_ADD_TEST(UC_StringUcs4ToUtf8)
     UC_ADD_TEST(UC_StringUtf8ToUcs4)
-endif(BUILD_TESTS)
 
-if(TEST_CODE_COVERAGE)
     SETUP_TARGET_FOR_COVERAGE_LCOV(
         NAME         test_coverage
         EXECUTABLE   ctest
         DEPENDENCIES uc
     )
-endif(TEST_CODE_COVERAGE)
+else()
+    install(
+        TARGETS       uc
+        RUNTIME       DESTINATION bin
+        LIBRARY       DESTINATION ${UC_SO_DEST}
+        ARCHIVE       DESTINATION lib
+        PUBLIC_HEADER DESTINATION include
+    )
+endif()
