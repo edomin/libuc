@@ -22,12 +22,12 @@
 #ifndef UC_H
 #define UC_H
 
+#include <stddef.h>
 #include <stdint.h>
-#include <stdlib.h>
 
 #define UC_VERSION_MAJOR 0
 #define UC_VERSION_MINOR 1
-#define UC_VERSION_PATCH 0
+#define UC_VERSION_PATCH 1
 
 #define XSTR(A) STR(A)
 #define STR(A) #A
@@ -113,4 +113,4 @@ size_t UC_StringUcs4ToUtf8(const uint32_t *stringUcs4, uint8_t *stringUtf8,
 size_t UC_StringUtf8ToUcs4(const uint8_t *stringUtf8, uint32_t *stringUcs4,
  size_t maxLen);
 
-#endif
+#endif /* UC_H */
