@@ -32,43 +32,127 @@
 #define XSTR(A) STR(A)
 #define STR(A) #A
 
+/** Library version macro.
+ */
 #define UC_VERSION \
  XSTR(UC_VERSION_MAJOR) "." XSTR(UC_VERSION_MINOR) "." XSTR(UC_VERSION_PATCH)
 
 #define UC_SIZE_ERROR SIZE_MAX
 
+/** Get library version components as integers.
+ *
+ *  @param[out] verMajor destination where major version number will be writen.
+ *  @param[out] verMinor destination where minor version number will be writen.
+ *  @param[out] verPatch destination where patch version number will be writen.
+ */
 void UC_GetLinkedVersion(int *verMajor, int *verMinor, int *verPatch);
 
+/** Get library version string.
+ *
+ *  @return version string
+ */
 const char *UC_GetLinkedVersionString(void);
 
-/* count num bytes of UTF8 symbol except leading zero */
+/** Count size in bytes of UTF8 symbol.
+ *
+ *  @param[in] utf8 UTF8 symbol.
+ *  @return    size of UTF8 symbol in bytes
+ */
 size_t UC_Utf8Size(const uint8_t *utf8);
 
-/* convert UCS4 symbol to UTF8 symbol. size - num bytes of UTF8 symbol except
- * leading zero */
+/** Convert UCS4 symbol to UTF8 symbol.
+ *
+ *  Null termiantor will be appended after last byte of result UTF8 symbol.
+ *  Size of destination buffer must be at least 5 bytes: 4 bytes for
+ *  UTF8-character and 1 byte for null-terminator.
+ *
+ *  @param[in]  ucs4 source UCS4 symbol.
+ *  @param[out] utf8 destination buffer for one UTF8 symbol.
+ *  @return     number of bytes placed in destination buffer except terminating
+ *              zero.
+ */
 size_t UC_Ucs4ToUtf8(uint32_t ucs4, uint8_t *utf8);
 
-/* convert UTF8 symbol to UCS4 symbol */
+/** Convert UTF8 symbol to UCS4 symbol.
+ *
+ *  Source buffer can contain multiple UTF8 characters. This function will
+ *  convert only first character.
+ *
+ *  @param[in] utf8 source buffer with UTF8 symbol.
+ *  @return    UCS4 symbol.
+ */
 uint32_t UC_Utf8ToUcs4(const uint8_t *utf8);
 
-/* Copy first symbol from fromUtf8 to toUtf8. Returns num bytes copied */
+/** Copy UTF8 symbol.
+ *
+ *  Copy first UTF8 symbol from source buffer to destination buffer. Null
+ *  terminator will be appended after last byte of UTF8 symbol in destination
+ *  buffer.
+ *
+ *  @param[out] toUtf8 destination buffer.
+ *  @param[in]  fromUtf8 source buffer with UTF8 symbols.
+ *  @return     num bytes actually copied.
+ */
 size_t UC_Utf8Copy(uint8_t *toUtf8, const uint8_t *fromUtf8);
 
-/* Returns upper bytes of UCS4 code. Example: 0x2522 -> 0x25 */
+/** Get upper bytes of UCS4 symbol.
+ *
+ *  Return 3 upper bytes of UCS4 symbol. Example:
+ *  UC_Ucs4UpperBytes(0x00002522u) will return 0x00000025u
+ *
+ *  @param[in]  ucs4 UCS4 symbol.
+ *  @return     3 upper bytes of UCS4 symbol.
+ */
 unsigned UC_Ucs4UpperBytes(uint32_t ucs4);
 
-/* Returns lower byte of UCS4 code. Example: 0x2522 -> 0x22 */
+/** Get lower byte of UCS4 symbol.
+ *
+ *  Return one lower byte of UCS4 symbol. Example:
+ *  UC_Ucs4UpperBytes(0x00002522u) will return 0x00000022u
+ *
+ *  @param[in]  ucs4 UCS4 symbol.
+ *  @return     one lower byte of UCS4 symbol.
+ */
 unsigned UC_Ucs4LowerByte(uint32_t ucs4);
 
-/* return pointer to next codepoint of UTF8 string */
+/** Return pointer to next character of UTF8 string.
+ *
+ *  If argument point to null terminator of string then pointer to same
+ *  byte will be returned. Comparing argument and result may be used for
+ *  checking when reached end of line while you iterate whole string with this
+ *  function. In this case returned pointer will be equal argument pointer.
+ *
+ *  @param[in]  stringUtf8 pointer to symbol (first or not) of UTF8 string.
+ *  @return     pointer to next symbol of given string.
+ */
 const uint8_t *UC_StringUtf8NextCodepoint(const uint8_t *stringUtf8);
 
-/* return position of next UTF8 codepoint starting from begin pos */
+/** Return offset to next character of UTF8 string.
+ *
+ *  Offset argument is offset to current character relatively of pointer to
+ *  beginning of the string. Return value is offset to next character.
+ *  If character placed by offset is null terminator of string then offset to
+ *  same byte will be returned. Comparing argument and result may be used for
+ *  checking when reached end of line while you iterate whole string with this
+ *  function. In this case returned offset will be equal argument offset.
+ *
+ *  @param[in]  stringUtf8 pointer to first symbol of UTF8 string.
+ *  @param[in]  beginPos offset in bytes to symbol relatively first character
+ *              of string.
+ *  @return     offset of next symbol in given string.
+ */
 size_t UC_StringUtf8NextCodepointOffset(const uint8_t *stringUtf8,
  size_t beginPos);
 
-/* return pointer to previous codepoint by given pointer of current UTF8
- * codepoint */
+/** Return pointer to previous character in UTF8 string.
+ *
+ *  There is not way to check if argument pointed to first character in string.
+ *  In this case bad things may happen. This is why don't use this function if
+ *  you do not know lower bound of string.
+ *
+ *  @param[in]  stringUtf8 pointer to symbol of UTF8 string.
+ *  @return     pointer to previous symbol of given string.
+ */
 const uint8_t *UC_StringUtf8PreviousCodepoint(const uint8_t *stringUtf8);
 
 /* return position of previous UTF8 codepoint starting from begin pos */
