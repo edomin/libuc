@@ -113,6 +113,9 @@ const uint8_t *UC_StringUtf8NextCodepoint(const uint8_t *stringUtf8) {
     if (stringUtf8 == NULL)
         return NULL;
 
+    if (*stringUtf8 == '\0')
+        return stringUtf8;
+
     do
         pos++;
     while ((pos[0u] & 0xC0u) == 0x80u);
@@ -126,6 +129,9 @@ size_t UC_StringUtf8NextCodepointOffset(const uint8_t *stringUtf8,
 
     if (stringUtf8 == NULL)
         return UC_SIZE_ERROR;
+
+    if (stringUtf8[beginPos] == '\0')
+        return beginPos;
 
     do
         pos++;
