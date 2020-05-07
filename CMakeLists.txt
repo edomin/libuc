@@ -175,7 +175,9 @@ if(UC_BUILD_DOC)
             VERBATIM
         )
     else()
-        message("Doxygen need to be installed to generate the doxygen documentation")
+        message(
+         "Doxygen need to be installed to generate the doxygen documentation"
+        )
     endif()
 endif()
 
