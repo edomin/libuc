@@ -12,14 +12,16 @@ For basic building:
  * gcc
  * make
  * CMake
+
 Also for building tests: 
  * Cmocka
  * lcov
+
 Also for building documentation: 
  * Doxygen
 
 #### Building debug version
-Remove -DUC_MORE_WARNINGS=ON for disabling huge list of warnings options when 
+Remove -DUC_MORE_WARNINGS=ON for disabling huge list of warning options when 
 runing gcc. Disable -DUC_WERROR=ON if you want to build with warnings if 
 warnings will be occured
 ```
