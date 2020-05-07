@@ -6,7 +6,7 @@ encodings:
 
 #### Prerequisites
 All prerequisites are optional. Library (without tests and documentation) may 
-be builded manually from commandline using any compiler.
+be builded manually from commandline using any compiler. 
 For basic building: 
  * UNIX envioronment (currently tested on Linux only)
  * gcc
