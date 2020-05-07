@@ -6,14 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [1.0.1] - 2017-06-20
+## [1.0.1] - 2020-05-07
 ### Added
 - CHANGELOG.md file for tracking changes.
 
 ### Fixed
 - Incorrect commands for building in README.md.
 
-## [1.0.0] - 2020-03-18
+## [1.0.0] - 2020-05-07
 ### No changelog
 
 ## [0.1.0] - 2020-03-18
