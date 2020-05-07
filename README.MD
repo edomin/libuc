@@ -27,9 +27,9 @@ runing gcc. Disable -DUC_WERROR=ON if you want to build with warnings if
 warnings will be occured
 ```
 $ mkdir cmake_build
-$ cd build
+$ cd cmake_build
 $ cmake .. -DCMAKE_BUILD_TYPE=Debug -DUC_MORE_WARNINGS=ON -DUC_WERROR=ON
-$ cmake --build cmake_build
+$ make
 ```
 
 Also there is shortcut (this also will build and run tests):
@@ -42,9 +42,9 @@ Remove -DUC_BUILD_DOC=ON option if you need not to build documentation. After
 building documentation will be appeared in <libuc_dir>/cmake_build/doc/html.
 ```
 $ mkdir cmake_build
-$ cd build
+$ cd cmake_build
 $ cmake .. -DCMAKE_BUILD_TYPE=Release -DUC_BUILD_DOC=ON
-$ cmake --build cmake_build
+$ make
 ```
 
 #### Installing
@@ -60,9 +60,9 @@ $ make install
 #### Build debug version and running tests
 ```
 $ mkdir cmake_build
-$ cd build
+$ cd cmake_build
 $ cmake .. -DCMAKE_BUILD_TYPE=Debug -DUC_CODE_COVERAGE=ON
-$ cmake --build cmake_build
+$ make
 $ ctest -V
 $ make test_coverage
 ```
