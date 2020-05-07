@@ -217,7 +217,7 @@ size_t UC_StringUcs4Size(const uint32_t *stringUcs4) {
 
     do
         currentPos++;
-    while (stringUcs4[currentPos] != 0x00u);
+    while (stringUcs4[currentPos] != 0x00000000u);
 
     return (currentPos + 1) * sizeof(uint32_t);
 }
