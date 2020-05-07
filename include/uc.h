@@ -37,7 +37,7 @@
 #define UC_VERSION_MINOR 0
 /** Library patch version number.
  */
-#define UC_VERSION_PATCH 0
+#define UC_VERSION_PATCH 1
 
 #define XSTR(A) STR(A)
 #define STR(A) #A
