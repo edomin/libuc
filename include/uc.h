@@ -31,13 +31,13 @@
 
 /** Library major version number.
  */
-#define UC_VERSION_MAJOR 0
+#define UC_VERSION_MAJOR 1
 /** Library minor version number.
  */
-#define UC_VERSION_MINOR 1
+#define UC_VERSION_MINOR 0
 /** Library patch version number.
  */
-#define UC_VERSION_PATCH 1
+#define UC_VERSION_PATCH 0
 
 #define XSTR(A) STR(A)
 #define STR(A) #A
