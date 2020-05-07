@@ -1,3 +1,7 @@
+/** \file uc.h
+ *  Main header file.
+ */
+
 /* For resolving mess when we count terminating zero or not:
  * When we counting symbols in string we do not counting terminating zero.
  * Example is std function strlen. Codepoint is character of nonfixed-wide
@@ -25,18 +29,26 @@
 #include <stddef.h>
 #include <stdint.h>
 
+/** Library major version number.
+ */
 #define UC_VERSION_MAJOR 0
+/** Library minor version number.
+ */
 #define UC_VERSION_MINOR 1
+/** Library patch version number.
+ */
 #define UC_VERSION_PATCH 1
 
 #define XSTR(A) STR(A)
 #define STR(A) #A
 
-/** Library version macro.
+/** Library dotted version macro.
  */
 #define UC_VERSION \
  XSTR(UC_VERSION_MAJOR) "." XSTR(UC_VERSION_MINOR) "." XSTR(UC_VERSION_PATCH)
 
+/** Value for indicating error when expect to get size.
+ */
 #define UC_SIZE_ERROR SIZE_MAX
 
 /** Get library version components as integers.
@@ -56,7 +68,8 @@ const char *UC_GetLinkedVersionString(void);
 /** Count size in bytes of UTF8 symbol.
  *
  *  @param[in] utf8 UTF8 symbol.
- *  @return    size of UTF8 symbol in bytes
+ *  @return    size of UTF8 symbol in bytes. 0 if pointer to symbol's buffer is
+ *             NULL
  */
 size_t UC_Utf8Size(const uint8_t *utf8);
 
@@ -66,10 +79,12 @@ size_t UC_Utf8Size(const uint8_t *utf8);
  *  Size of destination buffer must be at least 5 bytes: 4 bytes for
  *  UTF8-character and 1 byte for null-terminator.
  *
- *  @param[in]  ucs4 source UCS4 symbol.
- *  @param[out] utf8 destination buffer for one UTF8 symbol.
+ *  @param[in]  ucs4 source UCS4 symbol. Must not be bigger than 0x001FFFFF.
+ *  @param[out] utf8 destination buffer for one UTF8 symbol. If ucs4 argument
+ *              is bigger than 0x001FFFFF then bytes 0x20 (space) and 0x00
+ *              (null-terminator) will be writen to destination buffer.
  *  @return     number of bytes placed in destination buffer except terminating
- *              zero.
+ *              zero. If utf8 argument is NULL then this function returns 0.
  */
 size_t UC_Ucs4ToUtf8(uint32_t ucs4, uint8_t *utf8);
 
@@ -79,7 +94,10 @@ size_t UC_Ucs4ToUtf8(uint32_t ucs4, uint8_t *utf8);
  *  convert only first character.
  *
  *  @param[in] utf8 source buffer with UTF8 symbol.
- *  @return    UCS4 symbol.
+ *  @return    UCS4 symbol. If utf8 argument points to empty null-terminated
+ *             buffer (first byte of buffer is 0x00) or incorrect UTF8 sequence
+ *             or utf8 argument is NULL then 0x00000020 (space) will be
+ *             returned
  */
 uint32_t UC_Utf8ToUcs4(const uint8_t *utf8);
 
@@ -90,7 +108,10 @@ uint32_t UC_Utf8ToUcs4(const uint8_t *utf8);
  *  buffer.
  *
  *  @param[out] toUtf8 destination buffer.
- *  @param[in]  fromUtf8 source buffer with UTF8 symbols.
+ *  @param[in]  fromUtf8 source buffer with UTF8 symbols. If fromUtf8 argument
+ *              points to empty null-terminated buffer (first byte of buffer is
+ *              0x00) or incorrect UTF8 sequence or utf8 argument is NULL then
+ *              only null-termilator will be writen to destination buffer
  *  @return     num bytes actually copied.
  */
 size_t UC_Utf8Copy(uint8_t *toUtf8, const uint8_t *fromUtf8);
@@ -117,13 +138,15 @@ unsigned UC_Ucs4LowerByte(uint32_t ucs4);
 
 /** Return pointer to next character of UTF8 string.
  *
- *  If argument point to null terminator of string then pointer to same
+ *  If argument points to null terminator of string then pointer to same
  *  byte will be returned. Comparing argument and result may be used for
  *  checking when reached end of line while you iterate whole string with this
  *  function. In this case returned pointer will be equal argument pointer.
  *
  *  @param[in] stringUtf8 pointer to symbol (first or not) of UTF8 string.
- *  @return    pointer to next symbol of given string.
+ *  @return    pointer to next symbol of given string. NULL if stringUtf8 is
+ *             NULL. Null terminator if stringUtf8 is last symbol of string or
+ *             stringUtf8 is null terminator of string.
  */
 const uint8_t *UC_StringUtf8NextCodepoint(const uint8_t *stringUtf8);
 
@@ -139,7 +162,10 @@ const uint8_t *UC_StringUtf8NextCodepoint(const uint8_t *stringUtf8);
  *  @param[in] stringUtf8 pointer to first symbol of UTF8 string.
  *  @param[in] beginPos offset in bytes to symbol relatively first character
  *             of string.
- *  @return    offset of next symbol in given string.
+ *  @return    offset of next symbol in given string. UC_SIZE_ERROR if
+ *             stringUtf8 is NULL. Offset to null terminator of string if
+ *             stringUtf8 is last symbol of string or stringUtf8 is
+ *             null-terminator of string.
  */
 size_t UC_StringUtf8NextCodepointOffset(const uint8_t *stringUtf8,
  size_t beginPos);
@@ -151,7 +177,8 @@ size_t UC_StringUtf8NextCodepointOffset(const uint8_t *stringUtf8,
  *  you do not know lower bound of string.
  *
  *  @param[in] stringUtf8 pointer to symbol of UTF8 string.
- *  @return    pointer to previous symbol of given string.
+ *  @return    pointer to previous symbol of given string. NULL if stringUtf8
+ *             is NULL.
  */
 const uint8_t *UC_StringUtf8PreviousCodepoint(const uint8_t *stringUtf8);
 
@@ -165,7 +192,8 @@ const uint8_t *UC_StringUtf8PreviousCodepoint(const uint8_t *stringUtf8);
  *  @param[in] stringUtf8 pointer to first symbol of UTF8 string.
  *  @param[in] beginPos offset in bytes to symbol relatively first character
  *             of string.
- *  @return    offset of previous symbol in given string.
+ *  @return    offset of previous symbol in given string. UC_SIZE_ERROR if
+ *             stringUtf8 is NULL.
  */
 size_t UC_StringUtf8PreviousCodepointOffset(const uint8_t *stringUtf8,
  size_t beginPos);
@@ -175,7 +203,7 @@ size_t UC_StringUtf8PreviousCodepointOffset(const uint8_t *stringUtf8,
  *  Return value don't count terminating zero.
  *
  *  @param[in] stringUtf8 pointer to UTF8 string.
- *  @return    count of codepoints in UTF8 string.
+ *  @return    count of codepoints in UTF8 string. 0 if stringUtf8 is NULL.
  */
 size_t UC_StringUtf8Codepoints(const uint8_t *stringUtf8);
 
@@ -184,7 +212,7 @@ size_t UC_StringUtf8Codepoints(const uint8_t *stringUtf8);
  *  Return value also counts 1 byte for terminating zero.
  *
  *  @param[in] stringUtf8 pointer to UTF8 string.
- *  @return    size in bytes of UTF8 string.
+ *  @return    size in bytes of UTF8 string. 0 if stringUtf8 is NULL.
  */
 size_t UC_StringUtf8Size(const uint8_t *stringUtf8);
 
@@ -193,7 +221,8 @@ size_t UC_StringUtf8Size(const uint8_t *stringUtf8);
  *  Return value don't count terminating zero.
  *
  *  @param[in] stringUcs4 pointer to UCS4 string.
- *  @return    count of symbols in UCS4 string except terminating zero.
+ *  @return    count of symbols in UCS4 string except terminating zero. 0 if
+ *             stringUcs4 is NULL.
  */
 size_t UC_StringUcs4Len(const uint32_t *stringUcs4);
 
@@ -218,7 +247,7 @@ size_t UC_StringUcs4Len(const uint32_t *stringUcs4);
  *  string above as argument is 28.
  *
  *  @param[in] stringUcs4 pointer to UCS4 string.
- *  @return    size in bytes of UCS4 string.
+ *  @return    size in bytes of UCS4 string. 0 if stringUcs4 is NULL
  */
 size_t UC_StringUcs4Size(const uint32_t *stringUcs4);
 
@@ -229,7 +258,7 @@ size_t UC_StringUcs4Size(const uint32_t *stringUcs4);
  *  conversion. Return value also counts terminating zero.
  *
  *  @param[in] stringUcs4 pointer to UCS4 string.
- *  @return    size in bytes of UCS8 string.
+ *  @return    size in bytes of UCS8 string. 0 if stringUcs4 is NULL.
  */
 size_t UC_StringUcs4PredictUtf8Size(const uint32_t *stringUcs4);
 
@@ -240,11 +269,13 @@ size_t UC_StringUcs4PredictUtf8Size(const uint32_t *stringUcs4);
  *  @param[in]  stringUcs4 source UCS4 string.
  *  @param[out] stringUtf8 destination UTF8 string.
  *  @param[out] codepoints pointer to var where result codepoints count will be
- *              writed.
+ *              writed. 0 will be writen if stringUcs4 is empty or stringUtf8
+ *              is NULL.
  *  @param[in]  sizeMax max size in bytes with terminating zero of destination
  *              buffer.
  *  @return     Bytes count (including terminating zero) actually writen to
- *              stringUtf8.
+ *              stringUtf8. 1 if stringUcs4 is NUll (null term only will be
+ *              writen in destination buffer). 0 if stringUtf8 is NULL.
  */
 size_t UC_StringUcs4ToUtf8(const uint32_t *stringUcs4, uint8_t *stringUtf8,
  size_t *codepoints, size_t sizeMax);
@@ -258,7 +289,7 @@ size_t UC_StringUcs4ToUtf8(const uint32_t *stringUcs4, uint8_t *stringUtf8,
  *  @param[in]  maxLen max symbols count which can be writen in destination
  *              buffer (not counting terminating zero).
  *  @return     Symbols count (without terminating zero) actually writen to
- *              stringUcs4.
+ *              stringUcs4. 0 if stringUtf8 or stringUcs4 is NULL.
  */
 size_t UC_StringUtf8ToUcs4(const uint8_t *stringUtf8, uint32_t *stringUcs4,
  size_t maxLen);
