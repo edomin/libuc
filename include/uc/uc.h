@@ -23,21 +23,23 @@
  *   2 + 2 + 2 + 2 + 2 + 2 + 1 + 1 + 1 = 15
  * */
 
-#ifndef UC_H
-#define UC_H
+#ifndef UC_INCLUDE_UC_UC_H
+#define UC_INCLUDE_UC_UC_H
 
 #include <stddef.h>
 #include <stdint.h>
+
+#include "uc/types.h"
 
 /** Library major version number.
  */
 #define UC_VERSION_MAJOR 1
 /** Library minor version number.
  */
-#define UC_VERSION_MINOR 0
+#define UC_VERSION_MINOR 1
 /** Library patch version number.
  */
-#define UC_VERSION_PATCH 2
+#define UC_VERSION_PATCH 0
 
 #define XSTR(A) STR(A)
 #define STR(A) #A
@@ -124,7 +126,7 @@ size_t UC_Utf8Copy(uint8_t *toUtf8, const uint8_t *fromUtf8);
  *  @param[in] ucs4 UCS4 symbol.
  *  @return    3 upper bytes of UCS4 symbol.
  */
-unsigned UC_Ucs4UpperBytes(uint32_t ucs4);
+uint_least24_t UC_Ucs4UpperBytes(uint32_t ucs4);
 
 /** Get lower byte of UCS4 symbol.
  *
@@ -294,4 +296,4 @@ size_t UC_StringUcs4ToUtf8(const uint32_t *stringUcs4, uint8_t *stringUtf8,
 size_t UC_StringUtf8ToUcs4(const uint8_t *stringUtf8, uint32_t *stringUcs4,
  size_t maxLen);
 
-#endif /* UC_H */
+#endif /* UC_INCLUDE_UC_UC_H */

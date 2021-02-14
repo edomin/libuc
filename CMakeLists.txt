@@ -137,11 +137,11 @@ if(UC_CODE_COVERAGE)
     )
 endif()
 
-file(STRINGS "${CMAKE_SOURCE_DIR}/include/uc.h"
+file(STRINGS "${CMAKE_SOURCE_DIR}/include/uc/uc.h"
  UC_VERSION_MAJOR REGEX "#define UC_VERSION_MAJOR[ ]+[0-9]+")
-file(STRINGS "${CMAKE_SOURCE_DIR}/include/uc.h"
+file(STRINGS "${CMAKE_SOURCE_DIR}/include/uc/uc.h"
  UC_VERSION_MINOR REGEX "#define UC_VERSION_MINOR[ ]+[0-9]+")
-file(STRINGS "${CMAKE_SOURCE_DIR}/include/uc.h"
+file(STRINGS "${CMAKE_SOURCE_DIR}/include/uc/uc.h"
  UC_VERSION_PATCH REGEX "#define UC_VERSION_PATCH[ ]+[0-9]+")
 string(REGEX REPLACE "#define UC_VERSION_MAJOR[ ]+([0-9]+)" "\\1"
  UC_VERSION_MAJOR "${UC_VERSION_MAJOR}")

@@ -1,4 +1,4 @@
-#include "uc.h"
+#include "uc/uc.h"
 
 void UC_GetLinkedVersion(int *verMajor, int *verMinor, int *verPatch) {
     if (verMajor != NULL)
@@ -34,7 +34,7 @@ size_t UC_Ucs4ToUtf8(uint32_t ucs4, uint8_t *utf8) {
         return 0u;
 
     if (ucs4 <= 0x0000007Fu) {
-        utf8[0u] = (ucs4 & 0x7Fu);
+        utf8[0u] = ucs4 & 0x7Fu;
         utf8[1u] = 0x00u;
         return 1u;
     } else if (ucs4 <= 0x000007FFu) {
