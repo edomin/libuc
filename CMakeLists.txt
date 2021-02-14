@@ -13,7 +13,9 @@ endif()
 
 if(UC_CODE_COVERAGE)
     if(NOT ${CMAKE_BUILD_TYPE} STREQUAL "Debug")
-        message(STATUS "Setting build type to 'Debug' because Code Coverage needs Debug build.")
+        message(STATUS
+         "Setting build type to 'Debug' because Code Coverage needs Debug \
+         build.")
         set(CMAKE_BUILD_TYPE "Debug")
     endif()
     set(UC_LANGUAGES C CXX)
@@ -30,31 +32,52 @@ set_target_properties(uc_objlib PROPERTIES
     C_EXTENSIONS OFF
     POSITION_INDEPENDENT_CODE 1
 )
-target_compile_options(uc_objlib PRIVATE
-    -Wall -Wextra -Wno-unused-parameter -Wshadow -Werror -fmax-errors=100
-)
+list(APPEND UC_COMPILE_OPTIONS -Wall -Wextra -Wshadow -Werror -fmax-errors=100)
 if(UC_WERROR)
-    target_compile_options(uc_objlib PRIVATE -Werror)
+    list(APPEND UC_COMPILE_OPTIONS -Werror)
 endif()
 if(UC_MORE_WARNINGS)
+    UC_CHOOSE_C_COMPILER_FLAG("-fanalyzer" "" UC_FANALYZER)
+    UC_CHOOSE_C_COMPILER_FLAG("-fanalyzer-verbosity=3" ""
+     UC_FANALYZER_VERBOSITY_3)
     UC_CHOOSE_C_COMPILER_FLAG("-Walloca" "" UC_WALLOCA)
+    UC_CHOOSE_C_COMPILER_FLAG("-Wanalyzer-too-complex" ""
+     UC_WANALYZER_TOO_COMPLEX)
+    UC_CHOOSE_C_COMPILER_FLAG("-Wattribute-alias=2" "-Wattribute-alias"
+     UC_WATTRIBUTE_ALIAS_2)
+    UC_CHOOSE_C_COMPILER_FLAG("-Wc11-c2x-compat" "" UC_WC11_C2X_COMPAT)
     UC_CHOOSE_C_COMPILER_FLAG("-Wdangling-else" "" UC_WDANGLING_ELSE)
-    UC_CHOOSE_C_COMPILER_FLAG("-Wduplicated-branches" "" UC_WDUPLICATED_BRANCHES)
+    UC_CHOOSE_C_COMPILER_FLAG("-Wduplicated-branches" ""
+     UC_WDUPLICATED_BRANCHES)
     UC_CHOOSE_C_COMPILER_FLAG("-Wif-not-aligned" "" UC_WIF_NOT_ALIGNED)
-    UC_CHOOSE_C_COMPILER_FLAG("-Wstringop-truncation" "" UC_WSTRINGOP_TRUNCATION)
+    UC_CHOOSE_C_COMPILER_FLAG("-Wstringop-truncation" ""
+     UC_WSTRINGOP_TRUNCATION)
+    UC_CHOOSE_C_COMPILER_FLAG("-Wzero-length-bounds" ""
+     UC_WZERO_LENGTH_BOUNDS)
 
-    target_compile_options(uc_objlib PRIVATE
-        -Waggregate-return ${UC_WALLOCA} -Wbad-function-cast -Wcast-align
+    list(APPEND UC_COMPILE_OPTIONS
+        ${UC_FANALYZER} ${UC_FANALYZER_VERBOSITY_3} -Waggregate-return
+        -Walloc-zero ${UC_WALLOCA} ${UC_WANALYZER_TOO_COMPLEX}
+        ${UC_WATTRIBUTE_ALIAS_2} -Wbad-function-cast -Wc++-compat
+        ${UC_WC11_C2X_COMPAT} -Wc90-c99-compat -Wc99-c11-compat -Wcast-align
         -Wcast-qual ${UC_WDANGLING_ELSE} -Wdeclaration-after-statement
-        ${UC_WDUPLICATED_BRANCHES} -Wduplicated-cond ${UC_WIF_NOT_ALIGNED}
-        -Winit-self -Winline -Wjump-misses-init -Wlogical-op -Wnested-externs
-        -Wnonnull -Wnonnull-compare -Wnull-dereference -Wold-style-definition
-        -Wpointer-arith -Wredundant-decls -Wshift-overflow=2
+        -Wdisabled-optimization ${UC_WDUPLICATED_BRANCHES} -Wduplicated-cond
+        ${UC_WIF_NOT_ALIGNED} -Wimplicit-fallthrough=5 -Winit-self -Winline
+        -Winvalid-pch -Wjump-misses-init -Wlogical-op -Wmissing-include-dirs
+        -Wnested-externs -Wnonnull -Wnonnull-compare -Wnull-dereference
+        -Wold-style-definition -Wopenmp-simd -Wpointer-arith -Wpedantic
+        -Wredundant-decls -Wshift-overflow=2 -Wsign-conversion -Wstack-protector
         -Wstrict-prototypes ${UC_WSTRINGOP_TRUNCATION} -Wswitch-default
-        -Wswitch-enum -Wundef -Wuninitialized -Wunsafe-loop-optimizations
+        -Wshift-negative-value -Wshift-overflow=2 -Wstrict-overflow=4
+        -Wsuggest-attribute=cold -Wsuggest-attribute=const
+        -Wsuggest-attribute=malloc -Wsuggest-attribute=noreturn
+        -Wsuggest-attribute=pure -Wswitch-default -Wswitch-enum -Wtrampolines
+        -Wundef -Wuninitialized -Wunknown-pragmas -Wunsafe-loop-optimizations
         -Wvector-operation-performance -Wvla -Wwrite-strings
+        ${UC_WZERO_LENGTH_BOUNDS}
     )
 endif()
+target_compile_options(uc_objlib PRIVATE ${UC_COMPILE_OPTIONS})
 target_sources(uc_objlib PRIVATE
     "src/uc.c"
 )
