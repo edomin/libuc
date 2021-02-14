@@ -63,7 +63,17 @@ if (CMAKE_SYSTEM_NAME STREQUAL Windows)
 else()
     set(UC_SO_DEST "lib")
 endif()
-target_include_directories(uc_objlib PRIVATE include)
+
+configure_file(
+    "${CMAKE_SOURCE_DIR}/include/uc/config.h.in"
+    "${CMAKE_BINARY_DIR}/include/uc/config.h"
+    @ONLY
+)
+
+target_include_directories(uc_objlib PRIVATE
+    "${CMAKE_SOURCE_DIR}/include"
+    "${CMAKE_BINARY_DIR}/include"
+)
 
 add_library(uc SHARED $<TARGET_OBJECTS:uc_objlib>)
 add_library(uc_static STATIC $<TARGET_OBJECTS:uc_objlib>)
@@ -83,7 +93,11 @@ if(UC_CODE_COVERAGE)
     function(UC_ADD_TEST func)
         set(TEST_NAME "test_${func}")
         add_executable(${TEST_NAME} "${UC_TESTS_SOURCES_DIR}/${func}.c")
-        target_include_directories(${TEST_NAME} PRIVATE include)
+        target_compile_options(${TEST_NAME} PRIVATE ${UC_COMPILE_OPTIONS})
+        target_include_directories(${TEST_NAME} PRIVATE
+            "${CMAKE_SOURCE_DIR}/include"
+            "${CMAKE_BINARY_DIR}/include"
+        )
         target_link_libraries(
             ${TEST_NAME}
             ${CMOCKA_LIBRARY}

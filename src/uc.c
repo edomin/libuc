@@ -99,7 +99,7 @@ size_t UC_Utf8Copy(uint8_t *toUtf8, const uint8_t *fromUtf8) {
     return size;
 }
 
-unsigned UC_Ucs4UpperBytes(uint32_t ucs4) {
+uint_least24_t UC_Ucs4UpperBytes(uint32_t ucs4) {
     return ucs4 >> 8u;
 }
 

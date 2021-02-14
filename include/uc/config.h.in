@@ -1,0 +1,6 @@
+#ifndef UC_INCLUDE_UC_CONFIG_H_IN
+#define UC_INCLUDE_UC_CONFIG_H_IN
+
+#cmakedefine UC_HAVE_UINT_LEAST24_T
+
+#endif
