@@ -1,69 +1,71 @@
-#include "uc.h"
 #include <setjmp.h>
 #include <stdarg.h>
+#include <stddef.h>
+
 #include <cmocka.h>
 
-void UC_Utf8Size_Z_1(void **state) {
+#include "uc/uc.h"
+
+void UC_Utf8Size_Z_1(__attribute__((unused)) void **state) {
     size_t        size = 0xDEADBEEFu;
-    const uint8_t u8Char[] = {'\x7a', '\0'}; /* z */
+    const uint8_t u8Char[] = {0x7A, 0x00}; /* z */
 
     size = UC_Utf8Size(u8Char);
 
-    assert_true(size == 1u);
+    assert_int_equal(size, 1u);
 }
 
-void UC_Utf8Size_CyrillicYu_2(void **state) {
+void UC_Utf8Size_CyrillicYu_2(__attribute__((unused)) void **state) {
     size_t        size = 0xDEADBEEFu;
-    const uint8_t u8Char[] = {'\xd1', '\x8e', '\0'}; /* ю */
+    const uint8_t u8Char[] = {0xD1, 0x8E, 0x00}; /* ю */
 
     size = UC_Utf8Size(u8Char);
 
-    assert_true(size == 2u);
+    assert_int_equal(size, 2u);
 }
 
-void UC_Utf8Size_ChinesseTiger_3(void **state) {
+void UC_Utf8Size_ChinesseTiger_3(__attribute__((unused)) void **state) {
     size_t        size = 0xDEADBEEFu;
-    const uint8_t u8Char[] = {'\xe8', '\x99', '\x8e', '\0'}; /* 虎 */
+    const uint8_t u8Char[] = {0xE8, 0x99, 0x8E, 0x00}; /* 虎 */
 
     size = UC_Utf8Size(u8Char);
 
-    assert_true(size == 3u);
+    assert_int_equal(size, 3u);
 }
 
-void UC_Utf8Size_TwoCyrillicYu_2(void **state) {
+void UC_Utf8Size_TwoCyrillicYu_2(__attribute__((unused)) void **state) {
     size_t        size = 0xDEADBEEFu;
-    const uint8_t u8Char[] = {'\xd1', '\x8e', '\xd1', '\x8e', '\0'}; /* юю */
+    const uint8_t u8Char[] = {0xD1, 0x8E, 0xD1, 0x8E, 0x00}; /* юю */
 
     size = UC_Utf8Size(u8Char);
 
-    assert_true(size == 2u);
+    assert_int_equal(size, 2u);
 }
 
-void UC_Utf8Size_TooLongBytesSequence_0(void **state) {
+void UC_Utf8Size_TooLongBytesSequence_0(__attribute__((unused)) void **state) {
     size_t        size = 0xDEADBEEFu;
-    const uint8_t u8Char[] = {'\x80', '\x80', '\x80', '\x80', '\x80', '\x80',
-     '\x80', '\0'};
+    const uint8_t u8Char[] = {0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x00};
 
     size = UC_Utf8Size(u8Char);
 
-    assert_true(size == 0u);
+    assert_int_equal(size, 0u);
 }
 
-void UC_Utf8Size_Null_0(void **state) {
+void UC_Utf8Size_Null_0(__attribute__((unused)) void **state) {
     size_t size = 0xDEADBEEFu;
 
     size = UC_Utf8Size(NULL);
 
-    assert_true(size == 0u);
+    assert_int_equal(size, 0u);
 }
 
-void UC_Utf8Size_EmptyUtf8Char_0(void **state) {
+void UC_Utf8Size_EmptyUtf8Char_0(__attribute__((unused)) void **state) {
     size_t        size = 0xDEADBEEFu;
-    const uint8_t u8Char[] = {'\0'};
+    const uint8_t u8Char[] = {0x00};
 
     size = UC_Utf8Size(u8Char);
 
-    assert_true(size == 0u);
+    assert_int_equal(size, 0u);
 }
 
 const struct CMUnitTest testsGroup[] = {

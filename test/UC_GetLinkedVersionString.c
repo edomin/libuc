@@ -1,9 +1,13 @@
-#include "uc.h"
 #include <setjmp.h>
 #include <stdarg.h>
+#include <stddef.h>
+
 #include <cmocka.h>
 
-void UC_GetLinkedVersionString_Void_NonNull(void **state) {
+#include "uc/uc.h"
+
+void UC_GetLinkedVersionString_Void_NonNull(
+ __attribute__((unused)) void **state) {
     const char *version = NULL;
 
     version = UC_GetLinkedVersionString();

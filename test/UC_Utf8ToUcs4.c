@@ -1,78 +1,83 @@
-#include "uc.h"
 #include <setjmp.h>
 #include <stdarg.h>
+#include <stddef.h>
+
 #include <cmocka.h>
 
-void UC_Utf8ToUcs4_Z_0x0000007A(void **state) {
-    const uint8_t utf8[] = {'\x7A', '\0'}; /* z */
+#include "uc/uc.h"
+
+void UC_Utf8ToUcs4_Z_0x0000007A(__attribute__((unused)) void **state) {
+    const uint8_t utf8[] = {0x7A, 0x00}; /* z */
     uint32_t      ucs4 = 0xDEADBEEFu;
 
     ucs4 = UC_Utf8ToUcs4(utf8);
 
-    assert_true(ucs4 == 0x0000007Au);
+    assert_int_equal(ucs4, 0x0000007Au);
 }
 
-void UC_Utf8ToUcs4_CyrillicYu_0x0000044E(void **state) {
-    const uint8_t utf8[] = {'\xD1', '\x8E', '\0'}; /* ю */
+void UC_Utf8ToUcs4_CyrillicYu_0x0000044E(__attribute__((unused)) void **state) {
+    const uint8_t utf8[] = {0xD1, 0x8E, 0x00}; /* ю */
     uint32_t      ucs4 = 0xDEADBEEFu;
 
     ucs4 = UC_Utf8ToUcs4(utf8);
 
-    assert_true(ucs4 == 0x0000044Eu);
+    assert_int_equal(ucs4, 0x0000044Eu);
 }
 
-void UC_Utf8ToUcs4_ChinesseTiger_0x0000864E(void **state) {
-    const uint8_t utf8[] = {'\xE8', '\x99', '\x8E', '\0'}; /* 虎 */
+void UC_Utf8ToUcs4_ChinesseTiger_0x0000864E(
+ __attribute__((unused)) void **state) {
+    const uint8_t utf8[] = {0xE8, 0x99, 0x8E, 0x00}; /* 虎 */
     uint32_t      ucs4 = 0xDEADBEEFu;
 
     ucs4 = UC_Utf8ToUcs4(utf8);
 
-    assert_true(ucs4 == 0x0000864Eu);
+    assert_int_equal(ucs4, 0x0000864Eu);
 }
 
-void UC_Utf8ToUcs4_Smile_0x0001F603(void **state) {
-    const uint8_t utf8[] = {'\xF0', '\x9F', '\x98', '\x83', '\0'}; /* 😃 */
+void UC_Utf8ToUcs4_Smile_0x0001F603(__attribute__((unused)) void **state) {
+    const uint8_t utf8[] = {0xF0, 0x9F, 0x98, 0x83, 0x00}; /* 😃 */
     uint32_t      ucs4 = 0xDEADBEEFu;
 
     ucs4 = UC_Utf8ToUcs4(utf8);
 
-    assert_true(ucs4 == 0x0001F603u);
+    assert_int_equal(ucs4, 0x0001F603u);
 }
 
-void UC_Utf8ToUcs4_TwoCyrillicYu_0x0000044E(void **state) {
-    const uint8_t utf8[] = {'\xD1', '\x8E', '\xD1', '\x8E', '\0'}; /* юю */
+void UC_Utf8ToUcs4_TwoCyrillicYu_0x0000044E(
+ __attribute__((unused)) void **state) {
+    const uint8_t utf8[] = {0xD1, 0x8E, 0xD1, 0x8E, 0x00}; /* юю */
     uint32_t      ucs4 = 0xDEADBEEFu;
 
     ucs4 = UC_Utf8ToUcs4(utf8);
 
-    assert_true(ucs4 == 0x0000044Eu);
+    assert_int_equal(ucs4, 0x0000044Eu);
 }
 
-void UC_Utf8ToUcs4_TooLongSequence_0x00000020(void **state) {
-    const uint8_t utf8[] = {'\x80', '\x80', '\x80', '\x80', '\x80', '\x80',
-     '\x80', '\0'};
+void UC_Utf8ToUcs4_TooLongSequence_0x00000020(
+ __attribute__((unused)) void **state) {
+    const uint8_t utf8[] = {0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x00};
     uint32_t      ucs4 = 0xDEADBEEFu;
 
     ucs4 = UC_Utf8ToUcs4(utf8);
 
-    assert_true(ucs4 == 0x00000020u);
+    assert_int_equal(ucs4, 0x00000020u);
 }
 
-void UC_Utf8ToUcs4_Empty_0x00000020(void **state) {
-    const uint8_t utf8[] = {'\0'};
+void UC_Utf8ToUcs4_Empty_0x00000020(__attribute__((unused)) void **state) {
+    const uint8_t utf8[] = {0x00};
     uint32_t      ucs4 = 0xDEADBEEFu;
 
     ucs4 = UC_Utf8ToUcs4(utf8);
 
-    assert_true(ucs4 == 0x00000020u);
+    assert_int_equal(ucs4, 0x00000020u);
 }
 
-void UC_Utf8ToUcs4_Null_0x00000020(void **state) {
+void UC_Utf8ToUcs4_Null_0x00000020(__attribute__((unused)) void **state) {
     uint32_t      ucs4 = 0xDEADBEEFu;
 
     ucs4 = UC_Utf8ToUcs4(NULL);
 
-    assert_true(ucs4 == 0x00000020u);
+    assert_int_equal(ucs4, 0x00000020u);
 }
 
 const struct CMUnitTest testsGroup[] = {

@@ -11,11 +11,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Hide macro values in documentation.
 - Pretty checking messages while configuring
+- Better C89 support
 
 ### Fixed
 - Description for macro UC_VERSION.
 - Checking build type for testing
-- Future version diff in CHANGELOG.md
 
 ## [1.0.1] - 2020-05-07
 ### Added

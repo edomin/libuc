@@ -1,15 +1,18 @@
-#include "uc.h"
 #include <setjmp.h>
 #include <stdarg.h>
+#include <stddef.h>
+
 #include <cmocka.h>
 
-void UC_Ucs4LowerByte_0x0000044E_0x4E(void **state) {
+#include "uc/uc.h"
+
+void UC_Ucs4LowerByte_0x0000044E_0x4E(__attribute__((unused)) void **state) {
     uint32_t usc4 = 0x0000044Eu;
-    unsigned lowerByte = 0xDEADBEEFu;
+    uint8_t  lowerByte = 0xAAu;
 
     lowerByte = UC_Ucs4LowerByte(usc4);
 
-    assert_true(lowerByte == 0x4Eu);
+    assert_int_equal(lowerByte, 0x4Eu);
 }
 
 const struct CMUnitTest testsGroup[] = {

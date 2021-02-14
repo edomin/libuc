@@ -1,9 +1,12 @@
-#include "uc.h"
 #include <setjmp.h>
 #include <stdarg.h>
+#include <stddef.h>
+
 #include <cmocka.h>
 
-void UC_GetLinkedVersion_IntPtrs_VerNum(void **state) {
+#include "uc/uc.h"
+
+void UC_GetLinkedVersion_IntPtrs_VerNum(__attribute__((unused)) void **state) {
     int verMajor = -1;
     int verMinor = -1;
     int verPatch = -1;
@@ -15,7 +18,8 @@ void UC_GetLinkedVersion_IntPtrs_VerNum(void **state) {
     assert_int_not_equal(verPatch, -1);
 }
 
-void UC_GetLinkedVersion_NullPtrs_Nothing(void **state) {
+void UC_GetLinkedVersion_NullPtrs_Nothing(
+ __attribute__((unused)) void **state) {
     UC_GetLinkedVersion(NULL, NULL, NULL);
 }
 

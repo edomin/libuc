@@ -1,64 +1,76 @@
-#include "uc.h"
 #include <setjmp.h>
 #include <stdarg.h>
+#include <stddef.h>
+
 #include <cmocka.h>
 
-void UC_Ucs4ToUtf8_U32z_U8zSize1(void **state) {
+#include "uc/uc.h"
+
+void UC_Ucs4ToUtf8_U32z_U8zSize1(__attribute__((unused)) void **state) {
     uint32_t u32char = 0x0000007Au; /* z */
     uint8_t  u8char[5] = {0};
     size_t   size;
+    uint8_t  test_value[] = {0x7A, 0x00, 0x00, 0x00, 0x00};
 
     size = UC_Ucs4ToUtf8(u32char, u8char);
 
-    assert_memory_equal(u8char, "\x7A\0\0\0\0", 5u);
-    assert_true(size == 1u);
+    assert_int_equal(size, 1u);
+    assert_memory_equal(u8char, test_value, 5u);
 }
 
-void UC_Ucs4ToUtf8_U32cyrillicYu_U8cyrillicYuSize2(void **state) {
+void UC_Ucs4ToUtf8_U32cyrillicYu_U8cyrillicYuSize2(
+ __attribute__((unused)) void **state) {
     uint32_t u32char = 0x0000044Eu; /* ю */
     uint8_t  u8char[5] = {0};
     size_t   size;
+    uint8_t  test_value[] = {0xD1, 0x8E, 0x00, 0x00, 0x00};
 
     size = UC_Ucs4ToUtf8(u32char, u8char);
 
-    assert_memory_equal(u8char, "\xD1\x8E\0\0\0", 5u);
-    assert_true(size == 2u);
+    assert_int_equal(size, 2u);
+    assert_memory_equal(u8char, test_value, 5u);
 }
 
-void UC_Ucs4ToUtf8_U32chinesseTiger_U8chinesseTigerSize3(void **state) {
+void UC_Ucs4ToUtf8_U32chinesseTiger_U8chinesseTigerSize3(
+ __attribute__((unused)) void **state) {
     uint32_t u32char = 0x0000864Eu; /* 虎 */
     uint8_t  u8char[5] = {0};
     size_t   size;
+    uint8_t  test_value[] = {0xE8, 0x99, 0x8E, 0x00, 0x00};
 
     size = UC_Ucs4ToUtf8(u32char, u8char);
 
-    assert_memory_equal(u8char, "\xE8\x99\x8E\0\0", 5u);
-    assert_true(size == 3u);
+    assert_int_equal(size, 3u);
+    assert_memory_equal(u8char, test_value, 5u);
 }
 
-void UC_Ucs4ToUtf8_U32Smile_U8SmileSize4(void **state) {
+void UC_Ucs4ToUtf8_U32Smile_U8SmileSize4(__attribute__((unused)) void **state) {
     uint32_t u32char = 0x0001F603u; /* 😃 */
     uint8_t  u8char[5] = {0};
     size_t   size;
+    uint8_t  test_value[] = {0xF0, 0x9F, 0x98, 0x83, 0x00};
 
     size = UC_Ucs4ToUtf8(u32char, u8char);
 
-    assert_memory_equal(u8char, "\xF0\x9F\x98\x83\0", 5u);
-    assert_true(size == 4u);
+    assert_int_equal(size, 4u);
+    assert_memory_equal(u8char, test_value, 5u);
 }
 
-void UC_Ucs4ToUtf8_U32tooBig_U8spaceSize1(void **state) {
+void UC_Ucs4ToUtf8_U32tooBig_U8spaceSize1(
+ __attribute__((unused)) void **state) {
     uint32_t u32char = 0x10000000u;
     uint8_t  u8char[5] = {0};
     size_t   size;
+    uint8_t  test_value[] = {0x20, 0x00, 0x00, 0x00, 0x00};
 
     size = UC_Ucs4ToUtf8(u32char, u8char);
 
-    assert_memory_equal(u8char, "\x20\0\0\0\0", 5u);
-    assert_true(size == 1u);
+    assert_int_equal(size, 1u);
+    assert_memory_equal(u8char, test_value, 5u);
 }
 
-void UC_Ucs4ToUtf8_U32zToPointerToNull_NothingSize0(void **state) {
+void UC_Ucs4ToUtf8_U32zToPointerToNull_NothingSize0(
+ __attribute__((unused)) void **state) {
     uint32_t u32char = 0x0000007Au; /* z */
     uint8_t *u8char = NULL;
     size_t   size;
@@ -69,7 +81,8 @@ void UC_Ucs4ToUtf8_U32zToPointerToNull_NothingSize0(void **state) {
     assert_true(size == 0u);
 }
 
-void UC_Ucs4ToUtf8_U32zToNull_NothingSize0(void **state) {
+void UC_Ucs4ToUtf8_U32zToNull_NothingSize0(
+ __attribute__((unused)) void **state) {
     uint32_t u32char = 0x0000007Au; /* z */
     size_t   size;
 

@@ -23,7 +23,7 @@ endif()
 
 project(uc LANGUAGES ${UC_LANGUAGES})
 
-file(WRITE "${CMAKE_BINARY_DIR}/dummy.c" "")
+file(WRITE "${CMAKE_BINARY_DIR}/dummy.c" "int __unused__;")
 add_library(uc_objlib OBJECT "${CMAKE_BINARY_DIR}/dummy.c")
 set_target_properties(uc_objlib PROPERTIES
     C_STANDARD 90
