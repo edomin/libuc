@@ -42,7 +42,7 @@
 #define XSTR(A) STR(A)
 #define STR(A) #A
 
-/** Library dotted version macro.
+/** Library dotted version string.
  */
 #define UC_VERSION \
  XSTR(UC_VERSION_MAJOR) "." XSTR(UC_VERSION_MINOR) "." XSTR(UC_VERSION_PATCH)
