@@ -12,7 +12,7 @@ if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
 endif()
 
 if(UC_CODE_COVERAGE)
-    if(NOT CMAKE_BUILD_TYPE STREQUAL "Debug")
+    if(NOT ${CMAKE_BUILD_TYPE} STREQUAL "Debug")
         message(STATUS "Setting build type to 'Debug' because Code Coverage needs Debug build.")
         set(CMAKE_BUILD_TYPE "Debug")
     endif()
