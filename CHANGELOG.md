@@ -17,6 +17,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Description for macro UC_VERSION.
 - Checking build type for testing
 
+### Removed
+- Old test.c since pre-Cmocka times
+
 ## [1.0.1] - 2020-05-07
 ### Added
 - CHANGELOG.md file for tracking changes.
