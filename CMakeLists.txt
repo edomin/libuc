@@ -30,7 +30,7 @@ set_target_properties(uc_objlib PROPERTIES
     POSITION_INDEPENDENT_CODE 1
 )
 target_compile_options(uc_objlib PRIVATE
-    -Wall -Wextra -Wno-unused-parameter -Wshadow -Werror
+    -Wall -Wextra -Wno-unused-parameter -Wshadow -Werror -fmax-errors=100
 )
 if(UC_WERROR)
     target_compile_options(uc_objlib PRIVATE -Werror)
