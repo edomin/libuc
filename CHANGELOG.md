@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Limited max building erorrs to 100
 
+### Changed
+- Hide macro values in documentation.
 ## [1.0.1] - 2020-05-07
 ### Added
 - CHANGELOG.md file for tracking changes.
