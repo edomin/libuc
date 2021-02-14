@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Description for macro UC_VERSION.
 - Checking build type for testing
+- Future version diff in CHANGELOG.md
 
 ## [1.0.1] - 2020-05-07
 ### Added
@@ -29,7 +30,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.1.0] - 2020-03-18
 ### No changelog
 
-[Unreleased]: https://github.com/edomin/libuc/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/edomin/libuc/compare/v1.0.1...HEAD
 [1.0.1]: https://github.com/edomin/libuc/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/edomin/libuc/compare/v0.1.0...v1.0.0
 [0.1.0]: https://github.com/edomin/libuc/releases/tag/v0.1.0
