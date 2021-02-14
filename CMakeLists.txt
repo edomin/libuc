@@ -87,10 +87,16 @@ else()
     set(UC_SO_DEST "lib")
 endif()
 
+include(CheckTypeSize)
+
+CHECK_TYPE_SIZE(uint_least24_t UC_SIZEOF_UINT_LEAST24_T LANGUAGE C)
+if (NOT ${UC_SIZEOF_UINT_LEAST24_T} STREQUAL "")
+    set(UC_HAVE_UINT_LEAST24_T ON)
+endif()
+
 configure_file(
     "${CMAKE_SOURCE_DIR}/include/uc/config.h.in"
     "${CMAKE_BINARY_DIR}/include/uc/config.h"
-    @ONLY
 )
 
 target_include_directories(uc_objlib PRIVATE
