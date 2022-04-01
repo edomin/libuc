@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - uint_least24_t type for function UC_Ucs4UpperBytes
 - Pretty compiler options' checking output
 - More warnings
+- Build for Windows on Linux
 
 ### Changed
 - Hide macro values in documentation.
