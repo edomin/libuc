@@ -37,36 +37,33 @@ if(UC_WERROR)
     list(APPEND UC_COMPILE_OPTIONS -Werror)
 endif()
 if(UC_MORE_WARNINGS)
-    UC_CHOOSE_C_COMPILER_FLAG("-fanalyzer" "" UC_FANALYZER)
-    UC_CHOOSE_C_COMPILER_FLAG("-fanalyzer-verbosity=3" ""
-     UC_FANALYZER_VERBOSITY_3)
-    UC_CHOOSE_C_COMPILER_FLAG("-Walloca" "" UC_WALLOCA)
-    UC_CHOOSE_C_COMPILER_FLAG("-Wanalyzer-too-complex" ""
-     UC_WANALYZER_TOO_COMPLEX)
-    UC_CHOOSE_C_COMPILER_FLAG("-Wattribute-alias=2" "-Wattribute-alias"
-     UC_WATTRIBUTE_ALIAS_2)
-    UC_CHOOSE_C_COMPILER_FLAG("-Wc11-c2x-compat" "" UC_WC11_C2X_COMPAT)
-    UC_CHOOSE_C_COMPILER_FLAG("-Wdangling-else" "" UC_WDANGLING_ELSE)
-    UC_CHOOSE_C_COMPILER_FLAG("-Wduplicated-branches" ""
-     UC_WDUPLICATED_BRANCHES)
-    UC_CHOOSE_C_COMPILER_FLAG("-Wif-not-aligned" "" UC_WIF_NOT_ALIGNED)
-    UC_CHOOSE_C_COMPILER_FLAG("-Wstringop-truncation" ""
-     UC_WSTRINGOP_TRUNCATION)
-    UC_CHOOSE_C_COMPILER_FLAG("-Wzero-length-bounds" ""
-     UC_WZERO_LENGTH_BOUNDS)
+    uc_choose_c_compiler_flag(UC_FANALYZER "-fanalyzer" "")
+    uc_choose_c_compiler_flag(UC_FANALYZER_VERBOSITY_3 "-fanalyzer-verbosity=3"
+     "")
+    uc_choose_c_compiler_flag(UC_WALLOCA "-Walloca" "" )
+    uc_choose_c_compiler_flag(UC_WATTRIBUTE_ALIAS_2 "-Wattribute-alias=2"
+     "-Wattribute-alias")
+    uc_choose_c_compiler_flag(UC_WC11_C2X_COMPAT "-Wc11-c2x-compat" "" )
+    uc_choose_c_compiler_flag(UC_WDANGLING_ELSE "-Wdangling-else" "" )
+    uc_choose_c_compiler_flag(UC_WDUPLICATED_BRANCHES "-Wduplicated-branches"
+     "")
+    uc_choose_c_compiler_flag(UC_WIF_NOT_ALIGNED "-Wif-not-aligned" "" )
+    uc_choose_c_compiler_flag(UC_WSTRINGOP_TRUNCATION "-Wstringop-truncation"
+     "")
+    uc_choose_c_compiler_flag(UC_WZERO_LENGTH_BOUNDS "-Wzero-length-bounds" "")
 
     list(APPEND UC_COMPILE_OPTIONS
         ${UC_FANALYZER} ${UC_FANALYZER_VERBOSITY_3} -Waggregate-return
-        -Walloc-zero ${UC_WALLOCA} ${UC_WANALYZER_TOO_COMPLEX}
-        ${UC_WATTRIBUTE_ALIAS_2} -Wbad-function-cast -Wc++-compat
-        ${UC_WC11_C2X_COMPAT} -Wc90-c99-compat -Wc99-c11-compat -Wcast-align
-        -Wcast-qual ${UC_WDANGLING_ELSE} -Wdeclaration-after-statement
-        -Wdisabled-optimization ${UC_WDUPLICATED_BRANCHES} -Wduplicated-cond
-        ${UC_WIF_NOT_ALIGNED} -Wimplicit-fallthrough=5 -Winit-self -Winline
-        -Winvalid-pch -Wjump-misses-init -Wlogical-op -Wmissing-include-dirs
-        -Wnested-externs -Wnonnull -Wnonnull-compare -Wnull-dereference
-        -Wold-style-definition -Wopenmp-simd -Wpointer-arith -Wpedantic
-        -Wredundant-decls -Wshift-overflow=2 -Wsign-conversion -Wstack-protector
+        -Walloc-zero ${UC_WALLOCA} ${UC_WATTRIBUTE_ALIAS_2} -Wbad-function-cast
+        -Wc++-compat ${UC_WC11_C2X_COMPAT} -Wc90-c99-compat -Wc99-c11-compat
+        -Wcast-align -Wcast-qual ${UC_WDANGLING_ELSE}
+        -Wdeclaration-after-statement -Wdisabled-optimization
+        ${UC_WDUPLICATED_BRANCHES} -Wduplicated-cond ${UC_WIF_NOT_ALIGNED}
+        -Wimplicit-fallthrough=5 -Winit-self -Winline -Winvalid-pch
+        -Wjump-misses-init -Wlogical-op -Wmissing-include-dirs -Wnested-externs
+        -Wnonnull -Wnonnull-compare -Wnull-dereference -Wold-style-definition
+        -Wopenmp-simd -Wpointer-arith -Wpedantic -Wredundant-decls
+        -Wshift-overflow=2 -Wsign-conversion -Wstack-protector
         -Wstrict-prototypes ${UC_WSTRINGOP_TRUNCATION} -Wswitch-default
         -Wshift-negative-value -Wshift-overflow=2 -Wstrict-overflow=4
         -Wsuggest-attribute=cold -Wsuggest-attribute=const
