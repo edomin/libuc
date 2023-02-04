@@ -75,6 +75,19 @@ const char *UC_GetLinkedVersionString(void);
  */
 size_t UC_Utf8Size(const uint8_t *utf8);
 
+/** Convert UCS2 symbol to UTF8 symbol.
+ *
+ *  Null termiantor will be appended after last byte of result UTF8 symbol.
+ *  Size of destination buffer must be at least 5 bytes: 4 bytes for
+ *  UTF8-character and 1 byte for null-terminator.
+ *
+ *  @param[in]  ucs2 source UCS2 symbol.
+ *  @param[out] utf8 destination buffer for one UTF8 symbol.
+ *  @return     number of bytes placed in destination buffer except terminating
+ *              zero. If utf8 argument is NULL then this function returns 0.
+ */
+size_t UC_Ucs2ToUtf8(uint16_t ucs2, uint8_t *utf8);
+
 /** Convert UCS4 symbol to UTF8 symbol.
  *
  *  Null termiantor will be appended after last byte of result UTF8 symbol.
@@ -89,6 +102,19 @@ size_t UC_Utf8Size(const uint8_t *utf8);
  *              zero. If utf8 argument is NULL then this function returns 0.
  */
 size_t UC_Ucs4ToUtf8(uint32_t ucs4, uint8_t *utf8);
+
+/** Convert UTF8 symbol to UCS2 symbol.
+ *
+ *  Source buffer can contain multiple UTF8 characters. This function will
+ *  convert only first character.
+ *
+ *  @param[in] utf8 source buffer with UTF8 symbol.
+ *  @return    UCS2 symbol. If utf8 argument points to empty null-terminated
+ *             buffer (first byte of buffer is 0x00) or incorrect UTF8 sequence
+ *             or utf8 argument is NULL or utf8 argument is wider then 2 bytes
+ *             then 0x00000020 (space) will be returned
+ */
+uint16_t UC_Utf8ToUcs2(const uint8_t *utf8);
 
 /** Convert UTF8 symbol to UCS4 symbol.
  *
@@ -222,11 +248,46 @@ size_t UC_StringUtf8Size(const uint8_t *stringUtf8);
  *
  *  Return value don't count terminating zero.
  *
+ *  @param[in] stringUcs2 pointer to UCS2 string.
+ *  @return    count of symbols in UCS2 string except terminating zero. 0 if
+ *             stringUcs2 is NULL.
+ */
+size_t UC_StringUcs2Len(const uint16_t *stringUcs2);
+
+/** Get length of UCS4 string.
+ *
+ *  Return value don't count terminating zero.
+ *
  *  @param[in] stringUcs4 pointer to UCS4 string.
  *  @return    count of symbols in UCS4 string except terminating zero. 0 if
  *             stringUcs4 is NULL.
  */
 size_t UC_StringUcs4Len(const uint32_t *stringUcs4);
+
+/** Get size in bytes of USC2 string.
+ *
+ *  Return value also counts 2 bytes for terminating zero.
+ *  Example:
+ *  \code{.c}
+ *  uint16_t ucs2[] = {
+ *      0x041Fu, // 'П'  - 2 bytes
+ *      0x0440u, // 'р'  - 2 bytes
+ *      0x0438u, // 'и'  - 2 bytes
+ *      0x0432u, // 'в'  - 2 bytes
+ *      0x0435u, // 'е'  - 2 bytes
+ *      0x0442u, // 'т'  - 2 bytes
+ *      0x0000u  // '\0' - 2 bytes
+ *  }            // --------------
+ *               //       14 bytes overall
+ *  \endcode
+ *  Each character of this UCS2 string is 2-bytes wide. Null terminator also
+ *  2 bytes. Value returned by function UC_StringUcs2Size with pointer to
+ *  string above as argument is 14.
+ *
+ *  @param[in] stringUcs2 pointer to UCS2 string.
+ *  @return    size in bytes of UCS2 string. 0 if stringUcs2 is NULL
+ */
+size_t UC_StringUcs2Size(const uint16_t *stringUcs2);
 
 /** Get size in bytes of USC4 string.
  *
@@ -253,6 +314,17 @@ size_t UC_StringUcs4Len(const uint32_t *stringUcs4);
  */
 size_t UC_StringUcs4Size(const uint32_t *stringUcs4);
 
+/** Get size in bytes of UTF8 string converted from UCS2 string.
+ *
+ *  This function return size in bytes of UTF8 string converted from UCS2
+ *  string given in argument of this function. This function don't do actual
+ *  conversion. Return value also counts terminating zero.
+ *
+ *  @param[in] stringUcs2 pointer to UCS2 string.
+ *  @return    size in bytes of UTF8 string. 0 if stringUcs2 is NULL.
+ */
+size_t UC_StringUcs2PredictUtf8Size(const uint16_t *stringUcs2);
+
 /** Get size in bytes of UTF8 string converted from UCS4 string.
  *
  *  This function return size in bytes of UTF8 string converted from UCS4
@@ -260,9 +332,27 @@ size_t UC_StringUcs4Size(const uint32_t *stringUcs4);
  *  conversion. Return value also counts terminating zero.
  *
  *  @param[in] stringUcs4 pointer to UCS4 string.
- *  @return    size in bytes of UCS8 string. 0 if stringUcs4 is NULL.
+ *  @return    size in bytes of UTF8 string. 0 if stringUcs4 is NULL.
  */
 size_t UC_StringUcs4PredictUtf8Size(const uint32_t *stringUcs4);
+
+/** Convert UCS2 string to UTF8 string.
+ *
+ *  Size of result string will not bigger than sizeMax.
+ *
+ *  @param[in]  stringUcs2 source UCS2 string.
+ *  @param[out] stringUtf8 destination UTF8 string.
+ *  @param[out] codepoints pointer to var where result codepoints count will be
+ *              writed. 0 will be writen if stringUcs2 is empty or stringUtf8
+ *              is NULL.
+ *  @param[in]  sizeMax max size in bytes with terminating zero of destination
+ *              buffer.
+ *  @return     Bytes count (including terminating zero) actually writen to
+ *              stringUtf8. 1 if stringUcs2 is NUll (null term only will be
+ *              writen in destination buffer). 0 if stringUtf8 is NULL.
+ */
+size_t UC_StringUcs2ToUtf8(const uint16_t *stringUcs2, uint8_t *stringUtf8,
+ size_t *codepoints, size_t sizeMax);
 
 /** Convert UCS4 string to UTF8 string.
  *
@@ -281,6 +371,20 @@ size_t UC_StringUcs4PredictUtf8Size(const uint32_t *stringUcs4);
  */
 size_t UC_StringUcs4ToUtf8(const uint32_t *stringUcs4, uint8_t *stringUtf8,
  size_t *codepoints, size_t sizeMax);
+
+/** Convert UTF8 string to UCS2 string.
+ *
+ *  Length of result string will not bigger than maxLen.
+ *
+ *  @param[in]  stringUtf8 source UTF8 string.
+ *  @param[out] stringUcs2 destination UCS2 string.
+ *  @param[in]  maxLen max symbols count which can be writen in destination
+ *              buffer (not counting terminating zero).
+ *  @return     Symbols count (without terminating zero) actually writen to
+ *              stringUcs2. 0 if stringUtf8 or stringUcs2 is NULL.
+ */
+size_t UC_StringUtf8ToUcs2(const uint8_t *stringUtf8, uint16_t *stringUcs2,
+ size_t maxLen);
 
 /** Convert UTF8 string to UCS4 string.
  *

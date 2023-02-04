@@ -29,6 +29,28 @@ size_t UC_Utf8Size(const uint8_t *utf8) {
     return 0u;
 }
 
+size_t UC_Ucs2ToUtf8(uint16_t ucs2, uint8_t *utf8) {
+    if (utf8 == NULL)
+        return 0u;
+
+    if (ucs2 <= 0x007Fu) {
+        utf8[0u] = (ucs2 & 0x7Fu);
+        utf8[1u] = 0x00u;
+        return 1u;
+    } else if (ucs2 <= 0x07FFu) {
+        utf8[0u] = ((ucs2 & 0x7C0u) >> 6u) | 0xC0u;
+        utf8[1u] = (ucs2 & 0x3Fu) | 0x80u;
+        utf8[2u] = 0x00u;
+        return 2u;
+    } else {
+        utf8[0u] = ((ucs2 & 0xF000u) >> 12u) | 0xE0u;
+        utf8[1u] = ((ucs2 & 0xFC0u) >> 6u) | 0x80u;
+        utf8[2u] = (ucs2 & 0x3Fu) | 0x80u;
+        utf8[3u] = 0x00u;
+        return 3u;
+    }
+}
+
 size_t UC_Ucs4ToUtf8(uint32_t ucs4, uint8_t *utf8) {
     if (utf8 == NULL)
         return 0u;
@@ -61,6 +83,22 @@ size_t UC_Ucs4ToUtf8(uint32_t ucs4, uint8_t *utf8) {
     utf8[1u] = 0x00u;
 
     return 1u;
+}
+
+uint16_t UC_Utf8ToUcs2(const uint8_t *utf8) {
+    size_t size = UC_Utf8Size(utf8);
+
+    if (size == 1u)
+        return ((uint16_t)utf8[0u] & 0x7Fu);
+    else if (size == 2u) {
+        return (((uint16_t)utf8[0u] & 0x1Fu) << 6u) |
+         ((uint16_t)utf8[1u] & 0x3Fu);
+    } else if (size == 3u) {
+        return (((uint16_t)utf8[0u] & 0xFu) << 12u) |
+         (((uint16_t)utf8[1u] & 0x3Fu) << 6u) |
+         ((uint16_t)utf8[2u] & 0x3Fu);
+    } else
+        return 0x0020u;
 }
 
 uint32_t UC_Utf8ToUcs4(const uint8_t *utf8) {
@@ -197,6 +235,18 @@ size_t UC_StringUtf8Size(const uint8_t *stringUtf8) {
     return ++currentPos;
 }
 
+size_t UC_StringUcs2Len(const uint16_t *stringUcs2) {
+    size_t currentPos = 0u;
+
+    if (stringUcs2 == NULL)
+        return 0u;
+
+    while (stringUcs2[currentPos] != 0x0000u)
+        currentPos++;
+
+    return currentPos;
+}
+
 size_t UC_StringUcs4Len(const uint32_t *stringUcs4) {
     size_t currentPos = 0u;
 
@@ -207,6 +257,19 @@ size_t UC_StringUcs4Len(const uint32_t *stringUcs4) {
         currentPos++;
 
     return currentPos;
+}
+
+size_t UC_StringUcs2Size(const uint16_t *stringUcs2) {
+    size_t currentPos = 0u;
+
+    if (stringUcs2 == NULL)
+        return 0u;
+
+    do
+        currentPos++;
+    while (stringUcs2[currentPos] != 0x0000u);
+
+    return (currentPos + 1) * sizeof(uint16_t);
 }
 
 size_t UC_StringUcs4Size(const uint32_t *stringUcs4) {
@@ -222,6 +285,21 @@ size_t UC_StringUcs4Size(const uint32_t *stringUcs4) {
     return (currentPos + 1) * sizeof(uint32_t);
 }
 
+size_t UC_StringUcs2PredictUtf8Size(const uint16_t *stringUcs2) {
+    uint8_t utf8Buf[5u];
+    size_t  ucs2Len = UC_StringUcs2Len(stringUcs2);
+    size_t  utf8Pos = 0u;
+    size_t  i;
+
+    if (stringUcs2 == NULL)
+        return 0u;
+
+    for (i = 0u; i < ucs2Len; i++)
+        utf8Pos += UC_Ucs2ToUtf8(stringUcs2[i], utf8Buf);
+
+    return ++utf8Pos;
+}
+
 size_t UC_StringUcs4PredictUtf8Size(const uint32_t *stringUcs4) {
     uint8_t utf8Buf[5u];
     size_t  ucs4Len = UC_StringUcs4Len(stringUcs4);
@@ -233,6 +311,48 @@ size_t UC_StringUcs4PredictUtf8Size(const uint32_t *stringUcs4) {
 
     for (i = 0u; i < ucs4Len; i++)
         utf8Pos += UC_Ucs4ToUtf8(stringUcs4[i], utf8Buf);
+
+    return ++utf8Pos;
+}
+
+size_t UC_StringUcs2ToUtf8(const uint16_t *stringUcs2, uint8_t *stringUtf8,
+ size_t *codepoints, size_t sizeMax) {
+    uint8_t utf8Buf[5u];
+    size_t  ucs2Len = UC_StringUcs2Len(stringUcs2);
+    size_t  utf8Pos = 0u;
+    size_t  utf8Size;
+    size_t  i;
+
+    if (codepoints != NULL)
+        *codepoints = 0u;
+
+    if (stringUtf8 == NULL || sizeMax == 0)
+        return 0u;
+
+    if (stringUcs2 == NULL) {
+        stringUtf8[0u] = 0x00u;
+
+        return 1u;
+    }
+
+    for (i = 0u; i < ucs2Len; i++) {
+        size_t j;
+
+        utf8Size = UC_Ucs2ToUtf8(stringUcs2[i], utf8Buf);
+
+        if (utf8Pos + utf8Size + 1 > sizeMax)
+            break;
+
+        for (j = 0u; j < utf8Size; j++)
+            stringUtf8[utf8Pos + j] = utf8Buf[j];
+
+        utf8Pos += utf8Size;
+
+        if (codepoints != NULL)
+            (*codepoints)++;
+    }
+
+    stringUtf8[utf8Pos] = 0x00u;
 
     return ++utf8Pos;
 }
@@ -277,6 +397,33 @@ size_t UC_StringUcs4ToUtf8(const uint32_t *stringUcs4, uint8_t *stringUtf8,
     stringUtf8[utf8Pos] = 0x00u;
 
     return ++utf8Pos;
+}
+
+size_t UC_StringUtf8ToUcs2(const uint8_t *stringUtf8, uint16_t *stringUcs2,
+ size_t maxLen) {
+    size_t         codepoints = UC_StringUtf8Codepoints(stringUtf8);
+    const uint8_t *currentPos = stringUtf8;
+    size_t         i;
+
+    codepoints = (codepoints < maxLen) ? codepoints : maxLen;
+
+    if (stringUcs2 == NULL)
+        return 0u;
+
+    if (stringUtf8 == NULL) {
+        stringUcs2[0u] = 0x0000u;
+
+        return 0u;
+    }
+
+    for (i = 0u; i < codepoints; i++) {
+        stringUcs2[i] = UC_Utf8ToUcs2(currentPos);
+        currentPos = UC_StringUtf8NextCodepoint(currentPos);
+    }
+
+    stringUcs2[codepoints] = 0x0000u;
+
+    return codepoints;
 }
 
 size_t UC_StringUtf8ToUcs4(const uint8_t *stringUtf8, uint32_t *stringUcs4,
