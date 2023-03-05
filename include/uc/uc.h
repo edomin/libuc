@@ -31,26 +31,21 @@
 
 #include "uc/types.h"
 
-/** Library major version number.
- */
+/** Library major version number. */
 #define UC_VERSION_MAJOR 1
-/** Library minor version number.
- */
+/** Library minor version number. */
 #define UC_VERSION_MINOR 1
-/** Library patch version number.
- */
+/** Library patch version number. */
 #define UC_VERSION_PATCH 0
 
 #define XSTR(A) STR(A)
 #define STR(A) #A
 
-/** Library dotted version string.
- */
+/** Library dotted version string. */
 #define UC_VERSION \
  XSTR(UC_VERSION_MAJOR) "." XSTR(UC_VERSION_MINOR) "." XSTR(UC_VERSION_PATCH)
 
-/** Value for indicating error when expect to get size.
- */
+/** Value for indicating error when expect to get size. */
 #define UC_SIZE_ERROR SIZE_MAX
 
 /** Max size of UTF-8 codepoint */
