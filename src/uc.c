@@ -9,11 +9,11 @@ void UC_GetLinkedVersion(int *verMajor, int *verMinor, int *verPatch) {
         *verPatch = UC_VERSION_PATCH;
 }
 
-const char *UC_GetLinkedVersionString(void) {
+__attribute__((const)) const char *UC_GetLinkedVersionString(void) {
     return UC_VERSION;
 }
 
-size_t UC_Utf8Size(const uint8_t *utf8) {
+__attribute__((pure)) size_t UC_Utf8Size(const uint8_t *utf8) {
     size_t i;
 
     if (utf8 == NULL)
@@ -85,7 +85,7 @@ size_t UC_Ucs4ToUtf8(uint32_t ucs4, uint8_t *utf8) {
     return 1u;
 }
 
-uint16_t UC_Utf8ToUcs2(const uint8_t *utf8) {
+__attribute__((pure))  uint16_t UC_Utf8ToUcs2(const uint8_t *utf8) {
     size_t size = UC_Utf8Size(utf8);
 
     if (size == 1u)
@@ -101,7 +101,7 @@ uint16_t UC_Utf8ToUcs2(const uint8_t *utf8) {
         return 0x0020u;
 }
 
-uint32_t UC_Utf8ToUcs4(const uint8_t *utf8) {
+__attribute__((pure)) uint32_t UC_Utf8ToUcs4(const uint8_t *utf8) {
     size_t size = UC_Utf8Size(utf8);
 
     if (size == 1u)
@@ -137,15 +137,16 @@ size_t UC_Utf8Copy(uint8_t *toUtf8, const uint8_t *fromUtf8) {
     return size;
 }
 
-uint_least24_t UC_Ucs4UpperBytes(uint32_t ucs4) {
+__attribute__((const)) uint_least24_t UC_Ucs4UpperBytes(uint32_t ucs4) {
     return ucs4 >> 8u;
 }
 
-unsigned UC_Ucs4LowerByte(uint32_t ucs4) {
+__attribute__((const)) unsigned UC_Ucs4LowerByte(uint32_t ucs4) {
     return ucs4 & 0xFFu;
 }
 
-const uint8_t *UC_StringUtf8NextCodepoint(const uint8_t *stringUtf8) {
+__attribute__((pure)) const uint8_t *UC_StringUtf8NextCodepoint(
+ const uint8_t *stringUtf8) {
     const uint8_t *pos = stringUtf8;
 
     if (stringUtf8 == NULL)
@@ -161,8 +162,8 @@ const uint8_t *UC_StringUtf8NextCodepoint(const uint8_t *stringUtf8) {
     return pos;
 }
 
-size_t UC_StringUtf8NextCodepointOffset(const uint8_t *stringUtf8,
- size_t beginPos) {
+__attribute__((pure)) size_t UC_StringUtf8NextCodepointOffset(
+ const uint8_t *stringUtf8, size_t beginPos) {
     size_t pos = beginPos;
 
     if (stringUtf8 == NULL)
@@ -178,7 +179,8 @@ size_t UC_StringUtf8NextCodepointOffset(const uint8_t *stringUtf8,
     return pos;
 }
 
-const uint8_t *UC_StringUtf8PreviousCodepoint(const uint8_t *stringUtf8) {
+__attribute__((pure)) const uint8_t *UC_StringUtf8PreviousCodepoint(
+ const uint8_t *stringUtf8) {
     const uint8_t *pos = stringUtf8;
 
     if (stringUtf8 == NULL)
@@ -191,8 +193,8 @@ const uint8_t *UC_StringUtf8PreviousCodepoint(const uint8_t *stringUtf8) {
     return pos;
 }
 
-size_t UC_StringUtf8PreviousCodepointOffset(const uint8_t *stringUtf8,
- size_t beginPos) {
+__attribute__((pure)) size_t UC_StringUtf8PreviousCodepointOffset(
+ const uint8_t *stringUtf8, size_t beginPos) {
     size_t pos = beginPos;
 
     if (stringUtf8 == NULL)
@@ -205,7 +207,8 @@ size_t UC_StringUtf8PreviousCodepointOffset(const uint8_t *stringUtf8,
     return pos;
 }
 
-size_t UC_StringUtf8Codepoints(const uint8_t *stringUtf8) {
+__attribute__((pure)) size_t UC_StringUtf8Codepoints(
+ const uint8_t *stringUtf8) {
     size_t codepoints = 0u;
     size_t currentPos = 0u;
 
@@ -222,7 +225,7 @@ size_t UC_StringUtf8Codepoints(const uint8_t *stringUtf8) {
     return codepoints;
 }
 
-size_t UC_StringUtf8Size(const uint8_t *stringUtf8) {
+__attribute__((pure)) size_t UC_StringUtf8Size(const uint8_t *stringUtf8) {
     size_t currentPos = 0u;
 
     if (stringUtf8 == NULL)
@@ -235,7 +238,7 @@ size_t UC_StringUtf8Size(const uint8_t *stringUtf8) {
     return ++currentPos;
 }
 
-size_t UC_StringUcs2Len(const uint16_t *stringUcs2) {
+__attribute__((pure)) size_t UC_StringUcs2Len(const uint16_t *stringUcs2) {
     size_t currentPos = 0u;
 
     if (stringUcs2 == NULL)
@@ -247,7 +250,7 @@ size_t UC_StringUcs2Len(const uint16_t *stringUcs2) {
     return currentPos;
 }
 
-size_t UC_StringUcs4Len(const uint32_t *stringUcs4) {
+__attribute__((pure)) size_t UC_StringUcs4Len(const uint32_t *stringUcs4) {
     size_t currentPos = 0u;
 
     if (stringUcs4 == NULL)
@@ -259,7 +262,7 @@ size_t UC_StringUcs4Len(const uint32_t *stringUcs4) {
     return currentPos;
 }
 
-size_t UC_StringUcs2Size(const uint16_t *stringUcs2) {
+__attribute__((pure)) size_t UC_StringUcs2Size(const uint16_t *stringUcs2) {
     size_t currentPos = 0u;
 
     if (stringUcs2 == NULL)
@@ -272,7 +275,7 @@ size_t UC_StringUcs2Size(const uint16_t *stringUcs2) {
     return (currentPos + 1) * sizeof(uint16_t);
 }
 
-size_t UC_StringUcs4Size(const uint32_t *stringUcs4) {
+__attribute__((pure)) size_t UC_StringUcs4Size(const uint32_t *stringUcs4) {
     size_t currentPos = 0u;
 
     if (stringUcs4 == NULL)
