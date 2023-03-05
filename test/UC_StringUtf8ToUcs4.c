@@ -1,11 +1,13 @@
-#include <setjmp.h>
-#include <stdarg.h>
+#include <setjmp.h> // IWYU pragma: keep
+#include <stdarg.h> // IWYU pragma: keep
 #include <stddef.h>
+#include <stdint.h>
 
 #include <cmocka.h>
 
 #include "uc/uc.h"
 
+// NOLINTBEGIN(readability-magic-numbers)
 void UC_StringUtf8ToUcs4_Utf8null_MaxLen6_Ucs4zeros_Len0(
  __attribute__((unused)) void **state) {
     uint32_t ucs4[7] = {0};
@@ -72,6 +74,7 @@ void UC_StringUtf8ToUcs4_Utf8Privet_MaxLen5_Ucs4Prive_Len5(
     assert_int_equal(len, 5u);
     assert_memory_equal(ucs4, test_value, sizeof(uint32_t) * 7);
 }
+// NOLINTEND(readability-magic-numbers)
 
 const struct CMUnitTest testsGroup[] = {
     cmocka_unit_test(UC_StringUtf8ToUcs4_Utf8null_MaxLen6_Ucs4zeros_Len0),

@@ -1,11 +1,13 @@
-#include <setjmp.h>
-#include <stdarg.h>
+#include <setjmp.h> // IWYU pragma: keep
+#include <stdarg.h> // IWYU pragma: keep
 #include <stddef.h>
+#include <stdint.h>
 
 #include <cmocka.h>
 
 #include "uc/uc.h"
 
+// NOLINTBEGIN(readability-magic-numbers)
 void UC_Utf8Copy_FromZToArrayOfZeroes_0x7A00000000(
  __attribute__((unused)) void **state) {
     uint8_t       toUtf8[5] = {0x00, 0x00, 0x00, 0x00, 0x00};
@@ -106,6 +108,7 @@ void UC_Utf8Copy_FromCyrillicYuToNull_Nothing(
 
     assert_int_equal(nbytes, 0u);
 }
+// NOLINTEND(readability-magic-numbers)
 
 const struct CMUnitTest testsGroup[] = {
     cmocka_unit_test(UC_Utf8Copy_FromZToArrayOfZeroes_0x7A00000000),

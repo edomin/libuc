@@ -1,11 +1,12 @@
-#include <setjmp.h>
-#include <stdarg.h>
+#include <setjmp.h> // IWYU pragma: keep
+#include <stdarg.h> // IWYU pragma: keep
 #include <stddef.h>
 
 #include <cmocka.h>
 
 #include "uc/uc.h"
 
+// NOLINTBEGIN(readability-magic-numbers)
 void UC_Utf8Size_Z_1(__attribute__((unused)) void **state) {
     size_t        size = 0xDEADBEEFu;
     const uint8_t u8Char[] = {0x7A, 0x00}; /* z */
@@ -67,6 +68,7 @@ void UC_Utf8Size_EmptyUtf8Char_0(__attribute__((unused)) void **state) {
 
     assert_int_equal(size, 0u);
 }
+// NOLINTEND(readability-magic-numbers)
 
 const struct CMUnitTest testsGroup[] = {
     cmocka_unit_test(UC_Utf8Size_Z_1),

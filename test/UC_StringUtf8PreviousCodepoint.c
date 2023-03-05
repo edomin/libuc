@@ -1,6 +1,7 @@
-#include <setjmp.h>
-#include <stdarg.h>
+#include <setjmp.h> // IWYU pragma: keep
+#include <stdarg.h> // IWYU pragma: keep
 #include <stddef.h>
+#include <stdint.h>
 
 #include <cmocka.h>
 
@@ -14,6 +15,7 @@ void UC_StringUtf8PreviousCodepoint_NULL_NULL(
     assert_null(nextCodepoint);
 }
 
+// NOLINTBEGIN(readability-magic-numbers)
 void UC_StringUtf8PreviousCodepoint_CyrillicHello_3rd_letter_0xD180(
  __attribute__((unused)) void **state) {
     uint8_t        utf8[] = {
@@ -25,6 +27,7 @@ void UC_StringUtf8PreviousCodepoint_CyrillicHello_3rd_letter_0xD180(
 
     assert_memory_equal(previousCodepoint, "\xD1\x80", 2u);
 }
+// NOLINTEND(readability-magic-numbers)
 
 const struct CMUnitTest testsGroup[] = {
     cmocka_unit_test(UC_StringUtf8PreviousCodepoint_NULL_NULL),

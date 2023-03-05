@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - Some magic numbers in code
+- Linter errors
 
 ## [1.0.2] - 2022-04-01
 ### Added
