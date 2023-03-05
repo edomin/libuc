@@ -1,38 +1,21 @@
-ifdef TOOLCHAIN
-    ifneq (,$(wildcard ./cmake/toolchains/$(TOOLCHAIN).cmake))
-        TOOLCHAIN_OPT+=-DCMAKE_TOOLCHAIN_FILE=../cmake/toolchains/$(TOOLCHAIN).cmake
-    endif
-    CODECOV_ENABLED=OFF
+include barebones.mk
+
+ifndef builddoc
+	BB_CMAKE_EXTRA_FLAGS=-DUC_BUILD_DOC
 endif
 
-cmake_build:
-	mkdir cmake_build
+all: bb_all
 
-refresh_debug: cmake_build
-	cd cmake_build; cmake .. -DCMAKE_BUILD_TYPE=Debug \
-	 -DUC_CODE_COVERAGE=$(CODECOV_ENABLED) -DUC_MORE_WARNINGS=ON -DUC_WERROR=ON \
-	 -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON $(TOOLCHAIN_OPT)
+release: bb_build_release
 
-refresh_release: cmake_build
-	cd cmake_build; cmake .. -DCMAKE_BUILD_TYPE=Release -DUC_BUILD_DOC=ON \
-     -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON $(TOOLCHAIN_OPT)
+debug: bb_build_debug
 
-build:
-	cmake --build cmake_build
+coverage: bb_build_coverage
 
-build_debug: refresh_debug build
-ifndef TOOLCHAIN
-	cd cmake_build; ctest -V; make test_coverage
-endif
+lint: bb_build_lint
 
-build_release: refresh_release build
+lint_build: bb_lint_build
 
-install:
-	cmake --build cmake_build --target install
+install: bb_install
 
-install_debug: build_debug install
-
-install_release: build_release install
-
-clean:
-	-rm -r -f ./cmake_build
+clean: bb_clean
