@@ -62,6 +62,11 @@
 #ifndef UC_UNKNOWN_SYMBOL_PLACEHOLDER
     #define UC_UNKNOWN_SYMBOL_PLACEHOLDER 0x20u
 #endif
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /** Get library version components as integers.
  *
  *  @param[out] verMajor destination where major version number will be writen.
@@ -408,5 +413,9 @@ size_t UC_StringUtf8ToUcs2(const uint8_t *stringUtf8, uint16_t *stringUcs2,
  */
 size_t UC_StringUtf8ToUcs4(const uint8_t *stringUtf8, uint32_t *stringUcs4,
  size_t maxLen);
+
+#ifdef __cplusplus
+} /* extern "C" */
+#endif
 
 #endif /* UC_INCLUDE_UC_UC_H */

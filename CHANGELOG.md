@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - USC2 support
 - Function attributes 'const' and 'pure' for better optimisation
 
+### Changed
+- Better C++ support
+
 ### Fixed
 - Some magic numbers in code
 - Linter errors
