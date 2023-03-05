@@ -53,6 +53,15 @@
  */
 #define UC_SIZE_ERROR SIZE_MAX
 
+/** Max size of UTF-8 codepoint */
+#define UC_UTF8_CODEPOINT_SIZE_MAX 5u
+
+/** This symbol code will be inserted in places where conversion errors occured.
+ *  One common value for UTF-8, UCS-2 and UCS-4
+ */
+#ifndef UC_UNKNOWN_SYMBOL_PLACEHOLDER
+    #define UC_UNKNOWN_SYMBOL_PLACEHOLDER 0x20u
+#endif
 /** Get library version components as integers.
  *
  *  @param[out] verMajor destination where major version number will be writen.

@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - USC2 support
 - Function attributes 'const' and 'pure' for better optimisation
 
+### Fixed
+- Some magic numbers in code
+
 ## [1.0.2] - 2022-04-01
 ### Added
 - Limited max building erorrs to 100

@@ -1,5 +1,8 @@
 #include "uc/uc.h"
 
+#define UC_ONE_BYTE_SHIFT 8u
+#define UC_ONE_BYTE_MASK  0xFFu
+
 void UC_GetLinkedVersion(int *verMajor, int *verMinor, int *verPatch) {
     if (verMajor != NULL)
         *verMajor = UC_VERSION_MAJOR;
@@ -19,7 +22,7 @@ __attribute__((pure)) size_t UC_Utf8Size(const uint8_t *utf8) {
     if (utf8 == NULL)
         return 0u;
 
-    for (i = 0u; i < 5u; i++) {
+    for (i = 0u; i < UC_UTF8_CODEPOINT_SIZE_MAX; i++) {
         if (utf8[i] == 0x00u)
             return i;
         if (((utf8[i] & 0xC0u) != 0x80u) && (i != 0u))
@@ -79,7 +82,7 @@ size_t UC_Ucs4ToUtf8(uint32_t ucs4, uint8_t *utf8) {
         return 4u;
     }
 
-    utf8[0u] = 0x20u;
+    utf8[0u] = UC_UNKNOWN_SYMBOL_PLACEHOLDER;
     utf8[1u] = 0x00u;
 
     return 1u;
@@ -98,7 +101,7 @@ __attribute__((pure))  uint16_t UC_Utf8ToUcs2(const uint8_t *utf8) {
          (((uint16_t)utf8[1u] & 0x3Fu) << 6u) |
          ((uint16_t)utf8[2u] & 0x3Fu);
     } else
-        return 0x0020u;
+    return UC_UNKNOWN_SYMBOL_PLACEHOLDER;
 }
 
 __attribute__((pure)) uint32_t UC_Utf8ToUcs4(const uint8_t *utf8) {
@@ -119,7 +122,7 @@ __attribute__((pure)) uint32_t UC_Utf8ToUcs4(const uint8_t *utf8) {
          (((uint32_t)utf8[2u] & 0x3Fu) << 6u) |
          ((uint32_t)utf8[3u] & 0x3Fu);
     } else
-        return 0x00000020u;
+        return UC_UNKNOWN_SYMBOL_PLACEHOLDER;
 }
 
 size_t UC_Utf8Copy(uint8_t *toUtf8, const uint8_t *fromUtf8) {
@@ -138,11 +141,11 @@ size_t UC_Utf8Copy(uint8_t *toUtf8, const uint8_t *fromUtf8) {
 }
 
 __attribute__((const)) uint_least24_t UC_Ucs4UpperBytes(uint32_t ucs4) {
-    return ucs4 >> 8u;
+    return ucs4 >> UC_ONE_BYTE_SHIFT;
 }
 
 __attribute__((const)) unsigned UC_Ucs4LowerByte(uint32_t ucs4) {
-    return ucs4 & 0xFFu;
+    return ucs4 & UC_ONE_BYTE_MASK;
 }
 
 __attribute__((pure)) const uint8_t *UC_StringUtf8NextCodepoint(
@@ -289,7 +292,7 @@ __attribute__((pure)) size_t UC_StringUcs4Size(const uint32_t *stringUcs4) {
 }
 
 size_t UC_StringUcs2PredictUtf8Size(const uint16_t *stringUcs2) {
-    uint8_t utf8Buf[5u];
+    uint8_t utf8Buf[UC_UTF8_CODEPOINT_SIZE_MAX];
     size_t  ucs2Len = UC_StringUcs2Len(stringUcs2);
     size_t  utf8Pos = 0u;
     size_t  i;
@@ -304,7 +307,7 @@ size_t UC_StringUcs2PredictUtf8Size(const uint16_t *stringUcs2) {
 }
 
 size_t UC_StringUcs4PredictUtf8Size(const uint32_t *stringUcs4) {
-    uint8_t utf8Buf[5u];
+    uint8_t utf8Buf[UC_UTF8_CODEPOINT_SIZE_MAX];
     size_t  ucs4Len = UC_StringUcs4Len(stringUcs4);
     size_t  utf8Pos = 0u;
     size_t  i;
@@ -320,7 +323,7 @@ size_t UC_StringUcs4PredictUtf8Size(const uint32_t *stringUcs4) {
 
 size_t UC_StringUcs2ToUtf8(const uint16_t *stringUcs2, uint8_t *stringUtf8,
  size_t *codepoints, size_t sizeMax) {
-    uint8_t utf8Buf[5u];
+    uint8_t utf8Buf[UC_UTF8_CODEPOINT_SIZE_MAX];
     size_t  ucs2Len = UC_StringUcs2Len(stringUcs2);
     size_t  utf8Pos = 0u;
     size_t  utf8Size;
@@ -362,7 +365,7 @@ size_t UC_StringUcs2ToUtf8(const uint16_t *stringUcs2, uint8_t *stringUtf8,
 
 size_t UC_StringUcs4ToUtf8(const uint32_t *stringUcs4, uint8_t *stringUtf8,
  size_t *codepoints, size_t sizeMax) {
-    uint8_t utf8Buf[5u];
+    uint8_t utf8Buf[UC_UTF8_CODEPOINT_SIZE_MAX];
     size_t  ucs4Len = UC_StringUcs4Len(stringUcs4);
     size_t  utf8Pos = 0u;
     size_t  utf8Size;
