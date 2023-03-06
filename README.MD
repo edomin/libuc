@@ -18,7 +18,7 @@ For basic building:
 * UNIX envioronment (currently tested on Linux only)
 * C89-compiler (tested on gcc-10.2.1, mingw-10.x, tcc-0.9.27 and clang-11.0.1-2)
 * make
-* CMake >= 3.7.2
+* CMake >= 3.9
 * [cmake_barebones](https://github.com/edomin/cmake_barebones)
 
 Also for building tests:
@@ -48,7 +48,7 @@ $ make debug [toolchain={<predefined>|<file>}] [nowerror=1] [onejob=1] \
 ```
 Additional options:
 
-* toolchain=`{<predefined>|<file>}` - use one of predefined toolchain 
+* toolchain=`{<predefined>|<file>}` - use one of predefined toolchain
 configurations or your toolchain file.
 * nowerror=1 - compile sources without -Werror compiler option
 * onejob=1 - don't build in parallel mode
@@ -61,10 +61,10 @@ make release [toolchain={<predefined>|<file>}] [builddoc=1] [devmode=1] \
 ```
 Additional options:
 
-* toolchain=`{<predefined>|<file>}` - use one of predefined toolchain 
+* toolchain=`{<predefined>|<file>}` - use one of predefined toolchain
 configurations or your toolchain file.
 * builddoc=1 - build documentation
-* devmode=1 - enable verbose output and compile with huge amount of warnings 
+* devmode=1 - enable verbose output and compile with huge amount of warnings
 and -Werror
 * nowerror=1 - if devmode=1 option is active don't use -Werror compiler option
 * onejob=1 - don't build in parallel mode
@@ -81,7 +81,7 @@ $ make lint [toolchain={<predefined>|<file>}] [nowerror=1] [onejob=1]
 ```
 Additional options:
 
-* toolchain=`{<predefined>|<file>}` - use one of predefined toolchain 
+* toolchain=`{<predefined>|<file>}` - use one of predefined toolchain
 configurations or your toolchain file.
 * nowerror=1 - compile sources without -Werror compiler option
 * onejob=1 - don't build in parallel mode
@@ -92,7 +92,7 @@ $ make coverage [toolchain={<predefined>|<file>}] [nowerror=1] [onejob=1]
 ```
 Additional options:
 
-* toolchain=`{<predefined>|<file>}` - use one of predefined toolchain 
+* toolchain=`{<predefined>|<file>}` - use one of predefined toolchain
 configurations or your toolchain file.
 * nowerror=1 - compile sources without -Werror compiler option
 * onejob=1 - don't build in parallel mode
