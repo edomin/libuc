@@ -18,7 +18,7 @@ For basic building:
 * UNIX envioronment (currently tested on Linux only)
 * C89-compiler (tested on gcc-10.2.1, mingw-10.x, tcc-0.9.27 and clang-11.0.1-2)
 * make
-* CMake >= 3.9
+* CMake >= 3.11
 * [cmake_barebones](https://github.com/edomin/cmake_barebones)
 
 Also for building tests:
