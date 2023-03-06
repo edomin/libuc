@@ -9,7 +9,6 @@ include(barebones/barebones)
 
 project(uc LANGUAGES C)
 
-bb_add_options()
 bb_add_compile_options(LANG C OPTIONS C_COMPILE_OPTIONS)
 bb_add_more_warnings(
     LANG C
