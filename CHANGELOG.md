@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Using cmake_barebones framework for building
 - Readme updated
 - Minimal CMake version required is 3.11 now
+- Building documentation is optional now
 
 ### Fixed
 - Some magic numbers in code

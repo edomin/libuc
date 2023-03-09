@@ -1,7 +1,9 @@
 include barebones.mk
 
-ifndef builddoc
-	BB_CMAKE_EXTRA_FLAGS=-DUC_BUILD_DOC
+ifdef builddoc
+	BB_CMAKE_EXTRA_FLAGS=-DUC_BUILD_DOC=ON
+else
+	BB_CMAKE_EXTRA_FLAGS=-DUC_BUILD_DOC=OFF
 endif
 
 all: bb_all
