@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Some magic numbers in code
 - Linter errors
+- Broken installation
 
 ### Removed
 - Bundled CodeCoverage.cmake module. It must be installed separately now

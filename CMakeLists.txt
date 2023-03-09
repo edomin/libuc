@@ -55,6 +55,9 @@ target_include_directories(uc_objlib PRIVATE
 bb_add_library(uc        SHARED OBJLIB uc_objlib)
 bb_add_library(uc_static STATIC OBJLIB uc_objlib)
 
+set_target_properties(uc        PROPERTIES PUBLIC_HEADER "include/uc/uc.h")
+set_target_properties(uc_static PROPERTIES PUBLIC_HEADER "include/uc/uc.h")
+
 bb_test_c_compile_options(${C_COMPILE_OPTIONS})
 bb_test_include_directories("${CMAKE_SOURCE_DIR}/include"
     "${CMAKE_BINARY_DIR}/include"
