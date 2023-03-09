@@ -119,4 +119,3 @@ soon.
 #### Copying
 
 * Source code of library is under CC0. Read [COPYING](https://github.com/edomin/libuconvert/tree/master/COPYING) file
-* File cmake/CodeCoverage.cmake is under BSL 1.0. Read [third_party_licenses/LICENSE_1_0.txt](https://github.com/edomin/libuconvert/tree/master/third_party_licenses/LICENSE_1_0.txt) file
