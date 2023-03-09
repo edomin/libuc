@@ -22,8 +22,7 @@ bb_add_more_warnings(
     OPTIONS C_COMPILE_OPTIONS
 )
 
-file(WRITE "${CMAKE_BINARY_DIR}/dummy.c" "static int unused;\n")
-bb_add_library(uc_objlib OBJECT "${CMAKE_BINARY_DIR}/dummy.c")
+bb_add_library(uc_objlib OBJECT)
 set_target_properties(uc_objlib PROPERTIES
     C_STANDARD 90
     C_EXTENSIONS OFF
@@ -70,7 +69,9 @@ bb_add_test(UC_GetLinkedVersionString
     "${CMAKE_SOURCE_DIR}/test/UC_GetLinkedVersionString.c")
 bb_add_test(UC_Utf8Size "${CMAKE_SOURCE_DIR}/test/UC_Utf8Size.c")
 bb_add_test(UC_Utf8Copy "${CMAKE_SOURCE_DIR}/test/UC_Utf8Copy.c")
+bb_add_test(UC_Ucs2ToUtf8 "${CMAKE_SOURCE_DIR}/test/UC_Ucs2ToUtf8.c")
 bb_add_test(UC_Ucs4ToUtf8 "${CMAKE_SOURCE_DIR}/test/UC_Ucs4ToUtf8.c")
+bb_add_test(UC_Utf8ToUcs2 "${CMAKE_SOURCE_DIR}/test/UC_Utf8ToUcs2.c")
 bb_add_test(UC_Utf8ToUcs4 "${CMAKE_SOURCE_DIR}/test/UC_Utf8ToUcs4.c")
 bb_add_test(UC_Ucs4UpperBytes "${CMAKE_SOURCE_DIR}/test/UC_Ucs4UpperBytes.c")
 bb_add_test(UC_Ucs4LowerByte "${CMAKE_SOURCE_DIR}/test/UC_Ucs4LowerByte.c")
@@ -85,12 +86,20 @@ bb_add_test(UC_StringUtf8PreviousCodepointOffset
 bb_add_test(UC_StringUtf8Codepoints
     "${CMAKE_SOURCE_DIR}/test/UC_StringUtf8Codepoints.c")
 bb_add_test(UC_StringUtf8Size "${CMAKE_SOURCE_DIR}/test/UC_StringUtf8Size.c")
+bb_add_test(UC_StringUcs2Len "${CMAKE_SOURCE_DIR}/test/UC_StringUcs2Len.c")
 bb_add_test(UC_StringUcs4Len "${CMAKE_SOURCE_DIR}/test/UC_StringUcs4Len.c")
+bb_add_test(UC_StringUcs2Size "${CMAKE_SOURCE_DIR}/test/UC_StringUcs2Size.c")
 bb_add_test(UC_StringUcs4Size "${CMAKE_SOURCE_DIR}/test/UC_StringUcs4Size.c")
+bb_add_test(UC_StringUcs2PredictUtf8Size
+    "${CMAKE_SOURCE_DIR}/test/UC_StringUcs2PredictUtf8Size.c")
 bb_add_test(UC_StringUcs4PredictUtf8Size
     "${CMAKE_SOURCE_DIR}/test/UC_StringUcs4PredictUtf8Size.c")
+bb_add_test(UC_StringUcs2ToUtf8
+    "${CMAKE_SOURCE_DIR}/test/UC_StringUcs2ToUtf8.c")
 bb_add_test(UC_StringUcs4ToUtf8
     "${CMAKE_SOURCE_DIR}/test/UC_StringUcs4ToUtf8.c")
+bb_add_test(UC_StringUtf8ToUcs2
+    "${CMAKE_SOURCE_DIR}/test/UC_StringUtf8ToUcs2.c")
 bb_add_test(UC_StringUtf8ToUcs4
     "${CMAKE_SOURCE_DIR}/test/UC_StringUtf8ToUcs4.c")
 
