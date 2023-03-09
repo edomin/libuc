@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Readme updated
 - Minimal CMake version required is 3.11 now
 - Building documentation is optional now
+- Updated tests
 
 ### Fixed
 - Some magic numbers in code

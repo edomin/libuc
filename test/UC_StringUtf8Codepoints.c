@@ -23,6 +23,7 @@ void UC_StringUtf8Codepoints_CyrillicHello_6u(
 
     assert_int_equal(codepoints, 6u);
 }
+
 // NOLINTEND(readability-magic-numbers)
 
 const struct CMUnitTest testsGroup[] = {
