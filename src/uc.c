@@ -298,7 +298,7 @@ __attribute__((pure)) size_t UC_StringUcs4Size(const uint32_t *stringUcs4) {
     return (currentPos + 1) * sizeof(uint32_t);
 }
 
-size_t UC_StringUcs2PredictUtf8Size(const uint16_t *stringUcs2) {
+__attribute__((pure)) size_t UC_StringUcs2PredictUtf8Size(const uint16_t *stringUcs2) {
     uint8_t utf8Buf[UC_UTF8_CODEPOINT_SIZE_MAX];
     size_t  ucs2Len = UC_StringUcs2Len(stringUcs2);
     size_t  utf8Pos = 0u;
@@ -313,7 +313,7 @@ size_t UC_StringUcs2PredictUtf8Size(const uint16_t *stringUcs2) {
     return ++utf8Pos;
 }
 
-size_t UC_StringUcs4PredictUtf8Size(const uint32_t *stringUcs4) {
+__attribute__((pure)) size_t UC_StringUcs4PredictUtf8Size(const uint32_t *stringUcs4) {
     uint8_t utf8Buf[UC_UTF8_CODEPOINT_SIZE_MAX];
     size_t  ucs4Len = UC_StringUcs4Len(stringUcs4);
     size_t  utf8Pos = 0u;
