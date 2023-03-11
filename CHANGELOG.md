@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Attribute **pure** to functions **UC_StringUcs2PredictUtf8Size** and 
 **UC_StringUcs4PredictUtf8Size**
 
+### Fixed
+- Better TCC support
+
 ## [1.1.0] - 2023-03-09
 ### Added
 - USC2 support

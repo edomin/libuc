@@ -8,4 +8,4 @@ Description: Library for working with text in various encodings
 URL: https://github.com/edomin/libuc
 Version: @UC_VERSION_MAJOR@.@UC_VERSION_MINOR@.@UC_VERSION_PATCH@
 Cflags: -I${includedir}
-Libs: -L${libdir} -luc
+Libs: -L${libdir} -l@UC_TARGET@

@@ -34,11 +34,15 @@ target_sources(uc_objlib PRIVATE
     "src/uc.c"
 )
 
-include(CheckTypeSize)
+bb_process_type_availability(
+    LANG C
+    TYPE uint_least24_t
+    HEADERS stdint.h stddef.h
+    WHERE UC_UINT_LEAST24_T_HEADER
+)
 
-check_type_size(uint_least24_t UC_SIZEOF_UINT_LEAST24_T LANGUAGE C)
-if (NOT ${UC_SIZEOF_UINT_LEAST24_T} STREQUAL "")
-    set(UC_HAVE_UINT_LEAST24_T ON)
+if(UC_UINT_LEAST24_T_HEADER)
+    set(UC_HAVE_UINT_LEAST24_T)
 endif()
 
 configure_file(
@@ -51,11 +55,68 @@ target_include_directories(uc_objlib PRIVATE
     "${CMAKE_BINARY_DIR}/include"
 )
 
-bb_add_library(uc        SHARED OBJLIB uc_objlib)
+list(APPEND UC_TARGETS uc_static)
+if (${CMAKE_TRY_COMPILE_TARGET_TYPE} STREQUAL EXECUTABLE)
+    list(APPEND UC_TARGETS uc)
+    bb_add_library(uc SHARED OBJLIB uc_objlib)
+    set_target_properties(uc PROPERTIES PUBLIC_HEADER "include/uc/uc.h")
+
+    set(UC_TARGET uc)
+    configure_file(
+        "${CMAKE_SOURCE_DIR}/libuc.pc.in"
+        "${CMAKE_BINARY_DIR}/libuc.pc"
+        @ONLY
+    )
+
+    install(
+        FILES "${CMAKE_BINARY_DIR}/libuc.pc"
+        DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/pkgconfig
+    )
+
+    install(
+        TARGETS       uc
+        EXPORT        libucConfig
+        RUNTIME       DESTINATION bin
+        LIBRARY       DESTINATION ${BB_SO_DEST}
+        ARCHIVE       DESTINATION lib
+        PUBLIC_HEADER DESTINATION include
+    )
+endif()
+
 bb_add_library(uc_static STATIC OBJLIB uc_objlib)
 
-set_target_properties(uc        PROPERTIES PUBLIC_HEADER "include/uc/uc.h")
 set_target_properties(uc_static PROPERTIES PUBLIC_HEADER "include/uc/uc.h")
+
+set(UC_TARGET uc_static)
+configure_file(
+    "${CMAKE_SOURCE_DIR}/libuc.pc.in"
+    "${CMAKE_BINARY_DIR}/libuc-static.pc"
+    @ONLY
+)
+
+install(
+    FILES "${CMAKE_BINARY_DIR}/libuc-static.pc"
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/pkgconfig
+)
+
+install(
+    TARGETS       uc_static
+    EXPORT        libucConfig
+    RUNTIME       DESTINATION bin
+    LIBRARY       DESTINATION ${BB_SO_DEST}
+    ARCHIVE       DESTINATION lib
+    PUBLIC_HEADER DESTINATION include
+)
+
+export(TARGETS ${UC_TARGETS}
+    NAMESPACE UC::
+    FILE "${CMAKE_CURRENT_BINARY_DIR}/libucConfig.cmake"
+)
+
+install(EXPORT libucConfig
+    DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/cmake/libuc"
+    NAMESPACE UC::
+)
 
 bb_test_c_compile_options(${C_COMPILE_OPTIONS})
 bb_test_include_directories("${CMAKE_SOURCE_DIR}/include"
@@ -105,7 +166,7 @@ bb_add_test(UC_StringUtf8ToUcs4
 
 bb_add_coverage(${BB_COVERAGE_TARGET}
     EXCLUDE "${CMAKE_SOURCE_DIR}/test/*"
-    DEPS uc
+    DEPS uc_static
 )
 
 file(STRINGS "${CMAKE_SOURCE_DIR}/include/uc/uc.h"
@@ -141,42 +202,3 @@ if(UC_BUILD_DOC)
         )
     endif()
 endif()
-
-configure_file(
-    "${CMAKE_SOURCE_DIR}/libuc.pc.in"
-    "${CMAKE_BINARY_DIR}/libuc.pc"
-    @ONLY
-)
-
-install(
-    FILES "${CMAKE_BINARY_DIR}/libuc.pc"
-    DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/pkgconfig
-)
-
-install(
-    TARGETS       uc
-    EXPORT        libucConfig
-    RUNTIME       DESTINATION bin
-    LIBRARY       DESTINATION ${BB_SO_DEST}
-    ARCHIVE       DESTINATION lib
-    PUBLIC_HEADER DESTINATION include
-)
-
-install(
-    TARGETS       uc_static
-    EXPORT        libucConfig
-    RUNTIME       DESTINATION bin
-    LIBRARY       DESTINATION ${BB_SO_DEST}
-    ARCHIVE       DESTINATION lib
-    PUBLIC_HEADER DESTINATION include
-)
-
-export(TARGETS uc uc_static
-    NAMESPACE UC::
-    FILE "${CMAKE_CURRENT_BINARY_DIR}/libucConfig.cmake"
-)
-
-install(EXPORT libucConfig
-    DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/cmake/libuc"
-    NAMESPACE UC::
-)

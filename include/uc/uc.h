@@ -27,9 +27,15 @@
 #define UC_INCLUDE_UC_UC_H
 
 #include <stddef.h>
-#include <stdint.h>
+#ifndef __TINYC__
+    #include <stdint.h>
+#endif
 
 #include "uc/types.h"
+
+#ifndef SIZE_MAX
+    #define SIZE_MAX 0xFFFFFFFFFFFFFFFFull
+#endif
 
 /** Library major version number. */
 #define UC_VERSION_MAJOR 1
